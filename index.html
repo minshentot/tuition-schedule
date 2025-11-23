@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <title>Teacher Ooi Tuition 补习资讯 搜索系统</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, #f8fafc 0, #e0f2fe 40%, #eef2ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #0f172a;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 960px;
+      background: #ffffffee;
+      border-radius: 18px;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16);
+      padding: 24px 20px 28px;
+      backdrop-filter: blur(10px);
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        padding: 28px 32px 32px;
+      }
+    }
+
+    .title {
+      text-align: center;
+      margin-bottom: 6px;
+      font-size: clamp(1.4rem, 3vw, 1.8rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      background: linear-gradient(120deg, #0f172a, #1d4ed8, #0ea5e9);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.88rem;
+      color: #64748b;
+      margin-bottom: 20px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0f172a;
+      font-size: 0.78rem;
+      margin-bottom: 6px;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .card {
+      border-radius: 16px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 16px 14px 18px;
+    }
+
+    @media (min-width: 768px) {
+      .card {
+        padding: 18px 18px 20px;
+      }
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
+    .card-title {
+      font-weight: 700;
+      font-size: 0.98rem;
+      color: #0f172a;
+    }
+
+    .card-subtitle {
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+
+    label {
+      font-size: 0.85rem;
+      color: #0f172a;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    input[type="password"], input[type="text"] {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid #cbd5f5;
+      background: #ffffff;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    input[type="password"]:focus, input[type="text"]:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.18);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 16px;
+      margin-top: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      color: white;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
+      transition: transform 0.08s ease, box-shadow 0.12s ease, opacity 0.15s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.45);
+      opacity: 0.96;
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 5px 12px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: #64748b;
+      box-shadow: none;
+      padding-inline: 10px;
+      margin-top: 0;
+      border: none;
+      cursor: pointer;
+      font-size: 0.82rem;
+    }
+
+    .btn-ghost:hover {
+      background: #e2e8f0;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .helper-text {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    .message {
+      margin-top: 8px;
+      font-size: 0.8rem;
+    }
+
+    .message-error {
+      color: #b91c1c;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .hint-list {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 6px;
+      list-style: disc;
+      padding-left: 16px;
+    }
+
+    .hint-list li + li {
+      margin-top: 2px;
+    }
+
+    .section-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title span.icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: #2563eb;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      color: white;
+    }
+
+    .parent-tip {
+      font-size: 0.82rem;
+      color: #4b5563;
+      background: #fefce8;
+      border: 1px solid #facc15;
+      border-radius: 12px;
+      padding: 10px 10px;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    .parent-tip strong {
+      color: #854d0e;
+    }
+
+    .info-line {
+      font-size: 0.86rem;
+      margin-bottom: 4px;
+      color: #111827;
+    }
+
+    .info-line span {
+      font-weight: 600;
+      color: #1d4ed8;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.8rem;
+    }
+
+    thead {
+      background: #e5effe;
+    }
+
+    th, td {
+      padding: 6px 6px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: 700;
+      color: #1f2937;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f9fafb;
+    }
+
+    .tag {
+      display: inline-flex;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .tag-subject {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .small-note {
+      font-size: 0.74rem;
+      color: #94a3b8;
+      margin-top: 8px;
+    }
+
+    .admin-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    @media (min-width: 900px) {
+      .admin-layout {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+      .admin-left {
+        flex: 0 0 260px;
+      }
+      .admin-right {
+        flex: 1;
+      }
+    }
+
+    .admin-note-list {
+      font-size: 0.8rem;
+      color: #4b5563;
+      padding-left: 16px;
+      list-style: decimal;
+      margin-top: 6px;
+    }
+
+    .admin-note-list li + li {
+      margin-top: 4px;
+    }
+
+    details {
+      margin-top: 6px;
+      font-size: 0.8rem;
+    }
+
+    details summary {
+      cursor: pointer;
+      color: #2563eb;
+      font-weight: 600;
+      list-style: none;
+    }
+
+    details[open] summary {
+      margin-bottom: 4px;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      flex: 1;
+    }
+
+    .search-input input {
+      width: 100%;
+    }
+
+    .no-data {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .highlight-name {
+      font-weight: 700;
+      color: #0f172a;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="badge">
+    <span class="badge-dot"></span>
+    Teacher Ooi Tuition • 补习时间 & 功课查询
+  </div>
+  <h1 class="title">Teacher Ooi Tuition 补习资讯 搜索系统</h1>
+  <p class="subtitle">请输入老师提供的 access code，以查看补习时间、科目与功课安排</p>
+
+  <!-- 登录区域 -->
+  <section id="loginSection" class="section">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">请输入 Access Code</div>
+          <div class="card-subtitle">学生 / 家长请使用老师给你的专属 access code</div>
+        </div>
+      </div>
+
+      <label for="accessCode">Access Code</label>
+      <input id="accessCode" type="password" placeholder="在这里输入 access code，然后按 Enter 或按钮" />
+      <button class="btn" onclick="handleLogin()">
+        进入补习资讯
+      </button>
+
+      <div id="loginMessage" class="message"></div>
+
+      <ul class="hint-list">
+        <li>每位学生 / 家长都有个人专属 access code。</li>
+        <li>如忘记或遗失，请直接向老师索取新的 access code。</li>
+      </ul>
+      <p class="helper-text">
+        温馨提醒：本系统只负责显示排课与功课资讯，不会在画面上显示任何 access code 详情，以保护所有学生与家庭的隐私。
+      </p>
+    </div>
+  </section>
+
+  <!-- 主内容区域（登录后显示） -->
+  <section id="mainSection" class="section hidden">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title" id="welcomeTitle"></div>
+          <div class="card-subtitle" id="welcomeSubtitle"></div>
+        </div>
+        <button class="btn-ghost" onclick="handleLogout()">退出 / 切换账号</button>
+      </div>
+
+      <!-- 学生 / 家长视图 -->
+      <div id="studentView" class="hidden">
+        <div class="section-title">
+          <span class="icon">✓</span>
+          <span>给家长 / 学生的小提醒</span>
+        </div>
+
+        <div class="parent-tip">
+          <strong>温馨提醒：</strong>
+          欢迎来到 <strong>Teacher Ooi Tuition 补习资讯搜索系统</strong>。以下是
+          <span id="studentNameInTip" class="highlight-name"></span>
+          近期的补习时间与科目安排。<br><br>
+          老师若有临时调整（时间变动、加课、改科目），会在这里更新，请家长：<br>
+          • 建议每周至少查看一次；<br>
+          • 如对时间或功课有疑问，欢迎直接 WhatsApp 老师确认；<br>
+          • 若学生当天身体不适或有重要活动，请尽早通知老师，以便安排补课。
+        </div>
+
+        <div class="info-line">
+          当前登入学生：<span id="studentFullName"></span>
+        </div>
+
+        <table id="studentTable">
+          <thead>
+          <tr>
+            <th>日期</th>
+            <th>星期</th>
+            <th>时间</th>
+            <th>地点</th>
+            <th>科目</th>
+            <th>功课 / 作业</th>
+            <th>备注</th>
+          </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div id="studentNoData" class="no-data hidden">
+          目前还没有找到属于该学生的补习安排，请稍后再查看或联络老师。
+        </div>
+        <p class="small-note">
+          提示：若有考试前加课、补课安排，请特别留意「备注」栏。
+        </p>
+      </div>
+
+      <!-- Admin 视图（只有知道 admin code 的人才进得到） -->
+      <div id="adminView" class="hidden">
+        <div class="admin-layout">
+          <div class="admin-left">
+            <div class="section-title">
+              <span class="icon">A</span>
+              <span>老师专用排课总览</span>
+            </div>
+            <p class="info-line">
+              当前模式：<span style="font-weight:700;color:#1d4ed8;">老师管理模式（Admin）</span>
+            </p>
+            <p class="info-line" style="margin-top:4px;">
+              本页面所有排课资料，都是由老师在 GitHub 上编辑
+              <span style="font-weight:700;">ACCESS_CODES</span> 与
+              <span style="font-weight:700;">SCHEDULE</span> 自动生成。
+            </p>
+
+            <details>
+              <summary>📱 手机上快速修改时间表（给老师）</summary>
+              <ol class="admin-note-list">
+                <li>打开手机浏览器，登入 GitHub 帐号。</li>
+                <li>进入存放这个网页的 repo，点进 <code>index.html</code>。</li>
+                <li>点右上角铅笔图标（Edit），看到整份代码。</li>
+                <li>往下滑，找到注释
+                  <code>// ===== 1. 设定 Access Code 和学生资料 =====</code>
+                  与
+                  <code>// ===== 2. 设定补习时间表 SCHEDULE =====</code>。
+                </li>
+                <li>照着里面的格式修改学生名字、access code 或时间表内容。</li>
+                <li>拉到最底，按 <strong>Commit changes</strong> 保存。</li>
+                <li>重新整理家长用的网址，最新资讯会自动更新。</li>
+              </ol>
+            </details>
+
+            <details>
+              <summary>📝 更改 access code / 新增学生（给老师）</summary>
+              <ul class="admin-note-list">
+                <li>在 <code>ACCESS_CODES</code> 里面，每一位学生是一小段资料（fullName / shortName / code）。</li>
+                <li><code>shortName</code> 要跟时间表 <code>SCHEDULE</code> 里面 <code>students</code> 的名字一致（例如 "Lucas"）。</li>
+                <li>要换 access code：只改该学生那一段的 <code>code: "……"</code>。</li>
+                <li>要加新学生：复制一小段，改名字和 code 即可。</li>
+              </ul>
+            </details>
+
+            <details>
+              <summary>📚 更改排课内容（日期 / 科目 / 功课等）</summary>
+              <ul class="admin-note-list">
+                <li>在 <code>SCHEDULE</code> 数组中，每一个 <code>{ ... }</code> 是一堂课。</li>
+                <li>可以修改：日期、星期、时间、地点、学生名单、科目。</li>
+                <li><code>homework</code>：可以填写「课本第几页」「练习」等功课说明。</li>
+                <li><code>remark</code>：可以填写「补课」「考试前加课」「请自备课本」等备注。</li>
+              </ul>
+            </details>
+          </div>
+
+          <div class="admin-right">
+            <div class="card-subtitle" style="margin-bottom:6px;">完整排课总览（仅老师看得到）</div>
+            <div class="search-row">
+              <div class="search-input">
+                <input id="adminSearch" type="text" placeholder="快速搜索：学生名字 / 科目 / 日期 关键字…" oninput="filterAdminTable()" />
+              </div>
+              <span class="small-note">例如：<code>Lucas</code>、<code>数学</code>、<code>12月7日</code></span>
+            </div>
+
+            <table id="adminTable">
+              <thead>
+              <tr>
+                <th>日期</th>
+                <th>星期</th>
+                <th>时间</th>
+                <th>地点</th>
+                <th>学生</th>
+                <th>科目</th>
+                <th>功课 / 作业</th>
+                <th>备注</th>
+              </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            <div id="adminNoData" class="no-data hidden">
+              没有符合搜索条件的记录，请尝试其他关键字。
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<script>
+  // ============================
+  // ===== 1. 设定 Access Code 和学生资料 =====
+  // ============================
+
+  const ACCESS_CODES = {
+    // 老师的 admin code（只给你自己知道，不会出现在画面文字）
+    "totadmin2024": {
+      role: "admin",
+      fullName: "Teacher Ooi",
+      shortName: "ADMIN",
+      code: "totadmin2024"
+    },
+
+    // 学生 / 家长账号
+    "LGCZ3690": {
+      role: "student",
+      fullName: "Lucas Goh Cheng Ze",
+      shortName: "Lucas",
+      code: "LGCZ3690"
+    },
+    "JGJQ3620": {
+      role: "student",
+      fullName: "Joey Goh Jia Qi",
+      shortName: "Joey",
+      code: "JGJQ3620"
+    },
+    "JKJW5791": {
+      role: "student",
+      fullName: "Jayden Kang Jia Wei",
+      shortName: "Jayden",
+      code: "JKJW5791"
+    },
+    "WO8765": {
+      role: "student",
+      fullName: "Wendy Ong",
+      shortName: "Wendy",
+      code: "WO8765"
+    },
+    "GYC3628": {
+      role: "student",
+      fullName: "Goh Yu Chen",
+      shortName: "Yu Chen",
+      code: "GYC3628"
+    },
+    "GYS4782": {
+      role: "student",
+      fullName: "Goh Yu Sen",
+      shortName: "Yu Sen",
+      code: "GYS4782"
+    },
+    "EAHY8297": {
+      role: "student",
+      fullName: "Emily Ang Hui Yin",
+      shortName: "Emily",
+      code: "EAHY8297"
+    },
+    "CYX6969": {
+      role: "student",
+      fullName: "Choo Yi Xuan",
+      shortName: "Yi Xuan",
+      code: "CYX6969"
+    },
+    "CYH6699": {
+      role: "student",
+      fullName: "Choo Yan Han",
+      shortName: "Yan Han",
+      code: "CYH6699"
+    }
+  };
+
+  // ============================
+  // ===== 2. 设定补习时间表 SCHEDULE =====
+  // ============================
+
+  const SCHEDULE = [
+    // 2025年12月1日（星期一） Lucas 家
+    {
+      date: "2025-12-01",
+      dateLabel: "2025年12月1日",
+      day: "星期一",
+      time: "7:00p.m.-9:00p.m.",
+      location: "Lucas 家",
+      students: ["Joey", "Joell", "Yi Xuan", "Vanessa"],
+      subject: "国文作文",
+      homework: "",
+      remark: ""
+    },
+    {
+      date: "2025-12-01",
+      dateLabel: "2025年12月1日",
+      day: "星期一",
+      time: "7:00p.m.-9:00p.m.",
+      location: "Lucas 家",
+      students: ["Jayden"],
+      subject: "国文作文 + 国文理解",
+      homework: "",
+      remark: ""
+    },
+
+    // 2025年12月2日（星期二）
+    {
+      date: "2025-12-02",
+      dateLabel: "2025年12月2日",
+      day: "星期二",
+      time: "7:00p.m.-9:00p.m.",
+      location: "Lucas 家",
+      students: ["Vanessa", "Emily", "Lucas", "Jayden"],
+      subject: "科学（Science）",
+      homework: "",
+      remark: ""
+    },
+
+    // 2025年12月3日（星期三）
+    {
+      date: "2025-12-03",
+      dateLabel: "2025年12月3日",
+      day: "星期三",
+      time: "7:00p.m.-9:00p.m.",
+      location: "Lucas 家",
+      students: ["Emily", "Lucas", "Jayden"],
+      subject: "地理（Geografi）",
+      homework: "",
+      remark: ""
+    },
+
+    // 2025年12月4日（星期四）
+    {
+      date: "2025-12-04",
+      dateLabel: "2025年12月4日",
+      day: "星期四",
+      time: "7:00p.m.-9:00p.m.",
+      location: "Lucas 家",
+      students: ["Emily", "Lucas", "Jayden"],
+      subject: "历史（Sejarah）",
+      homework: "",
+      remark: ""
+    },
+
+    // 2025年12月6日（星期六）
+    {
+      date: "2025-12-06",
+      dateLabel: "2025年12月6日",
+      day: "星期六",
+      time: "5:00p.m.-7:00p.m.",
+      location: "Lucas 家",
+      students: ["Joey", "Joell", "Yi Xuan", "Jayden"],
+      subject: "数学",
+      homework: "",
+      remark: ""
+    },
+    {
+      date: "2025-12-06",
+      dateLabel: "2025年12月6日",
+      day: "星期六",
+      time: "5:00p.m.-7:00p.m.",
+      location: "Lucas 家",
+      students: ["Vanessa", "Lucas"],
+      subject: "ASK",
+      homework: "",
+      remark: ""
+    },
+    {
+      date: "2025-12-06",
+      dateLabel: "2025年12月6日",
+      day: "星期六",
+      time: "8:00p.m.-9:30p.m.",
+      location: "Lucas 家",
+      students: ["Joey", "Joell", "Yi Xuan", "Jayden"],
+      subject: "华文理解",
+      homework: "",
+      remark: ""
+    },
+    {
+      date: "2025-12-06",
+      dateLabel: "2025年12月6日",
+      day: "星期六",
+      time: "9:30p.m.-11:00p.m.",
+      location: "Lucas 家",
+      students: ["Vanessa"],
+      subject: "英文理解",
+      homework: "",
+      remark: ""
+    },
+    {
+      date: "2025-12-06",
+      dateLabel: "2025年12月6日",
+      day: "星期六",
+      time: "9:30p.m.-11:00p.m.",
+      location: "Lucas 家",
+      students: ["Jayden"],
+      subject: "英文理解 + 英文作文",
+      homework: "",
+      remark: ""
+    },
+
+    // 2025年12月7日（星期日）
+    {
+      date: "2025-12-07",
+      dateLabel: "2025年12月7日",
+      day: "星期日",
+      time: "9:00a.m.-11:00a.m.",
+      location: "Lucas 家",
+      students: ["Yu Chen"],
+      subject: "数学",
+      homework: "",
+      remark: ""
+    },
+    {
+      date: "2025-12-07",
+      dateLabel: "2025年12月7日",
+      day: "星期日",
+      time: "12:00p.m.-2:00p.m.",
+      location: "Lucas 家",
+      students: ["Jayden", "Emily", "Vanessa", "Lucas"],
+      subject: "华文理解（补课）",
+      homework: "",
+      remark: "补课安排，请务必准时出席。"
+    },
+    {
+      date: "2025-12-07",
+      dateLabel: "2025年12月7日",
+      day: "星期日",
+      time: "2:00p.m.-4:00p.m.",
+      location: "Lucas 家",
+      students: ["Jayden", "Emily", "Vanessa", "Lucas"],
+      subject: "华文作文",
+      homework: "",
+      remark: ""
+    },
+    {
+      date: "2025-12-07",
+      dateLabel: "2025年12月7日",
+      day: "星期日",
+      time: "2:00p.m.-4:00p.m.",
+      location: "Lucas 家",
+      students: ["Yi Xuan"],
+      subject: "英文理解",
+      homework: "",
+      remark: ""
+    },
+    {
+      date: "2025-12-07",
+      dateLabel: "2025年12月7日",
+      day: "星期日",
+      time: "4:00p.m.-7:00p.m.",
+      location: "Lucas 家",
+      students: ["Jayden"],
+      subject: "数学",
+      homework: "",
+      remark: ""
+    },
+    {
+      date: "2025-12-07",
+      dateLabel: "2025年12月7日",
+      day: "星期日",
+      time: "5:00p.m.-7:00p.m.",
+      location: "Lucas 家",
+      students: ["Yi Xuan"],
+      subject: "国文作文",
+      homework: "",
+      remark: ""
+    },
+    {
+      date: "2025-12-07",
+      dateLabel: "2025年12月7日",
+      day: "星期日",
+      time: "5:00p.m.-7:00p.m.",
+      location: "Lucas 家",
+      students: ["Joey", "Joell"],
+      subject: "科学",
+      homework: "",
+      remark: ""
+    }
+  ];
+
+  // ============================
+  // ===== 3. 登录与画面切换逻辑 =====
+  // ============================
+
+  function normalizeName(name) {
+    return (name || "").toLowerCase().replace(/\s+/g, "");
+  }
+
+  function handleLogin() {
+    const input = document.getElementById("accessCode");
+    const code = (input.value || "").trim();
+    const msg = document.getElementById("loginMessage");
+
+    if (!code) {
+      msg.textContent = "请输入 access code。";
+      msg.className = "message message-error";
+      return;
+    }
+
+    const user = ACCESS_CODES[code];
+
+    if (!user) {
+      msg.textContent = "Access code 不正确，请确认后再输入。";
+      msg.className = "message message-error";
+      return;
+    }
+
+    // 清除提示
+    msg.textContent = "";
+    msg.className = "message";
+
+    // 切换到主画面
+    document.getElementById("loginSection").classList.add("hidden");
+    document.getElementById("mainSection").classList.remove("hidden");
+
+    const welcomeTitle = document.getElementById("welcomeTitle");
+    const welcomeSubtitle = document.getElementById("welcomeSubtitle");
+
+    if (user.role === "admin") {
+      welcomeTitle.textContent = "欢迎使用排课管理系统";
+      welcomeSubtitle.textContent = "目前是老师管理模式，以下为全部学生的补习安排总览。";
+      document.getElementById("studentView").classList.add("hidden");
+      document.getElementById("adminView").classList.remove("hidden");
+      renderAdminTable();
+    } else {
+      welcomeTitle.textContent = `欢迎，${user.fullName}`;
+      welcomeSubtitle.textContent = "以下是专属你的补习时间与科目安排。";
+      document.getElementById("studentView").classList.remove("hidden");
+      document.getElementById("adminView").classList.add("hidden");
+      renderStudentView(user);
+    }
+  }
+
+  function handleLogout() {
+    document.getElementById("mainSection").classList.add("hidden");
+    document.getElementById("loginSection").classList.remove("hidden");
+    document.getElementById("accessCode").value = "";
+    document.getElementById("loginMessage").textContent = "";
+    const search = document.getElementById("adminSearch");
+    if (search) search.value = "";
+  }
+
+  // 按 Enter 也能登录
+  document.getElementById("accessCode")
+    .addEventListener("keyup", function (event) {
+      if (event.key === "Enter") {
+        handleLogin();
+      }
+    });
+
+  function renderStudentView(user) {
+    const tbody = document.querySelector("#studentTable tbody");
+    tbody.innerHTML = "";
+    const noData = document.getElementById("studentNoData");
+
+    document.getElementById("studentNameInTip").textContent = user.fullName;
+    document.getElementById("studentFullName").textContent = user.fullName;
+
+    const shortKey = normalizeName(user.shortName);
+
+    const rows = SCHEDULE.filter((item) =>
+      item.students.some((s) => normalizeName(s) === shortKey)
+    );
+
+    if (!rows.length) {
+      noData.classList.remove("hidden");
+      return;
+    } else {
+      noData.classList.add("hidden");
+    }
+
+    rows
+      .sort((a, b) => {
+        if (a.date === b.date) {
+          return a.time.localeCompare(b.time);
+        }
+        return a.date.localeCompare(b.date);
+      })
+      .forEach((item) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${item.dateLabel}</td>
+          <td>${item.day}</td>
+          <td>${item.time}</td>
+          <td>${item.location}</td>
+          <td><span class="tag tag-subject">${item.subject}</span></td>
+          <td>${item.homework || "<span style='color:#9ca3af;'>（暂无资料）</span>"}</td>
+          <td>${item.remark || ""}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+  }
+
+  function renderAdminTable() {
+    const tbody = document.querySelector("#adminTable tbody");
+    tbody.innerHTML = "";
+
+    const rows = [...SCHEDULE].sort((a, b) => {
+      if (a.date === b.date) {
+        return a.time.localeCompare(b.time);
+      }
+      return a.date.localeCompare(b.date);
+    });
+
+    rows.forEach((item) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${item.dateLabel}</td>
+        <td>${item.day}</td>
+        <td>${item.time}</td>
+        <td>${item.location}</td>
+        <td>${item.students.join("、")}</td>
+        <td><span class="tag tag-subject">${item.subject}</span></td>
+        <td>${item.homework || "<span style='color:#9ca3af;'>（暂无）</span>"}</td>
+        <td>${item.remark || ""}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    document.getElementById("adminNoData").classList.add("hidden");
+  }
+
+  function filterAdminTable() {
+    const searchInput = document.getElementById("adminSearch");
+    if (!searchInput) return;
+    const keyword = (searchInput.value || "").toLowerCase().trim();
+    const tbody = document.querySelector("#adminTable tbody");
+    const rows = tbody.querySelectorAll("tr");
+    let visibleCount = 0;
+
+    rows.forEach((tr) => {
+      const text = tr.textContent.toLowerCase();
+      if (!keyword || text.includes(keyword)) {
+        tr.style.display = "";
+        visibleCount++;
+      } else {
+        tr.style.display = "none";
+      }
+    });
+
+    const noData = document.getElementById("adminNoData");
+    if (visibleCount === 0) {
+      noData.classList.remove("hidden");
+    } else {
+      noData.classList.add("hidden");
+    }
+  }
+</script>
+</body>
+</html>

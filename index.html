@@ -40,7 +40,6 @@
 
     .title {
       text-align: center;
-      margin-bottom: 6px;
       font-size: clamp(1.4rem, 3vw, 1.8rem);
       font-weight: 800;
       letter-spacing: 0.04em;
@@ -299,9 +298,10 @@
       color: #0369a1;
     }
 
+    /* 科目标签：改成紫色风格 */
     .tag-subject {
-     background: #f3e8ff; 
-     color: #7e22ce;     
+      background: #f3e8ff;  /* 淡紫背景 */
+      color: #7e22ce;       /* 深紫文字 */
     }
 
     .small-note {
@@ -384,6 +384,22 @@
       font-weight: 700;
       color: #0f172a;
     }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .title-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
   </style>
 </head>
 <body>
@@ -392,26 +408,17 @@
     <span class="badge-dot"></span>
     Teacher Ooi Tuition • 补习时间 & 功课查询
   </div>
-  <div style="
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:12px;
-    flex-wrap:wrap;
-    margin-bottom:10px;
- ">
-    <img src="https://raw.githubusercontent.com/minshentot/tuition-schedule/db6f9cfa00e2ca1cdc64c84b1d95179792cda7fb/ms%202024%20chibi%201.png"
-       alt="Logo"
-       style="
-         width:48px;
-         height:48px;
-         border-radius:10px;
-         object-fit:cover;
-       ">
-  <h1 class="title" style="margin:0;">
-    Teacher Ooi Tuition 补习资讯 搜索系统
-  </h1>
-</div>
+
+  <!-- 标题 + 圆形 Logo -->
+  <div class="title-row">
+    <img
+      class="title-logo"
+      src="https://raw.githubusercontent.com/minshentot/tuition-schedule/db6f9cfa00e2ca1cdc64c84b1d95179792cda7fb/ms%202024%20chibi%201.png"
+      alt="Teacher Ooi Logo"
+    />
+    <h1 class="title">Teacher Ooi Tuition 补习资讯 搜索系统</h1>
+  </div>
+
   <p class="subtitle">请输入老师提供的 access code，以查看补习时间、科目与功课安排</p>
 
   <!-- 登录区域 -->
@@ -671,10 +678,10 @@
         const ch = row[i];
 
         if (ch === '"') {
-          // 切换引号状态
+          // 引号状态切换
           inQuotes = !inQuotes;
         } else if (ch === "," && !inQuotes) {
-          // 在非引号状态下遇到逗号 → 分隔字段
+          // 非引号状态下遇到逗号 → 分隔字段
           fields.push(field);
           field = "";
         } else {
@@ -942,6 +949,3 @@
 </script>
 </body>
 </html>
-
-
-

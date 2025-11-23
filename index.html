@@ -490,45 +490,26 @@
               当前模式：<span style="font-weight:700;color:#1d4ed8;">老师管理模式（Admin）</span>
             </p>
             <p class="info-line" style="margin-top:4px;">
-              本页面所有排课资料，都是由老师在 GitHub 上编辑
-              <span style="font-weight:700;">ACCESS_CODES</span> 与
-              <span style="font-weight:700;">SCHEDULE</span> 自动生成。
+              本页面所有排课资料，都是由老师在 Google Sheet 中编辑，网页会自动同步最新资讯。
             </p>
 
             <details>
               <summary>📱 手机上快速修改时间表（给老师）</summary>
               <ol class="admin-note-list">
-                <li>打开手机浏览器，登入 GitHub 帐号。</li>
-                <li>进入存放这个网页的 repo，点进 <code>index.html</code>。</li>
-                <li>点右上角铅笔图标（Edit），看到整份代码。</li>
-                <li>往下滑，找到注释
-                  <code>// ===== 1. 设定 Access Code 和学生资料 =====</code>
-                  与
-                  <code>// ===== 2. 设定补习时间表 SCHEDULE =====</code>。
-                </li>
-                <li>照着里面的格式修改学生名字、access code 或时间表内容。</li>
-                <li>拉到最底，按 <strong>Commit changes</strong> 保存。</li>
-                <li>重新整理家长用的网址，最新资讯会自动更新。</li>
+                <li>打开 Google Sheet（用你的 Gmail 帐号登入）。</li>
+                <li>找到这张时间表，直接修改日期 / 时间 / 学生名单 / 科目 / 功课 / 备注。</li>
+                <li>Sheet 自动储存，不用按保存。</li>
+                <li>家长刷新网页后，就会看到最新的排课。</li>
               </ol>
             </details>
 
             <details>
               <summary>📝 更改 access code / 新增学生（给老师）</summary>
               <ul class="admin-note-list">
-                <li>在 <code>ACCESS_CODES</code> 里面，每一位学生是一小段资料（fullName / shortName / code）。</li>
-                <li><code>shortName</code> 要跟时间表 <code>SCHEDULE</code> 里面 <code>students</code> 的名字一致（例如 "Lucas"）。</li>
+                <li>access code 依然写在网页代码的 <code>ACCESS_CODES</code> 里面。</li>
+                <li><code>shortName</code> 要跟 Google Sheet 的「students」栏里用的名字一致（例如 "Lucas"）。</li>
                 <li>要换 access code：只改该学生那一段的 <code>code: "……"</code>。</li>
                 <li>要加新学生：复制一小段，改名字和 code 即可。</li>
-              </ul>
-            </details>
-
-            <details>
-              <summary>📚 更改排课内容（日期 / 科目 / 功课等）</summary>
-              <ul class="admin-note-list">
-                <li>在 <code>SCHEDULE</code> 数组中，每一个 <code>{ ... }</code> 是一堂课。</li>
-                <li>可以修改：日期、星期、时间、地点、学生名单、科目。</li>
-                <li><code>homework</code>：可以填写「课本第几页」「练习」等功课说明。</li>
-                <li><code>remark</code>：可以填写「补课」「考试前加课」「请自备课本」等备注。</li>
               </ul>
             </details>
           </div>
@@ -558,7 +539,7 @@
               <tbody></tbody>
             </table>
             <div id="adminNoData" class="no-data hidden">
-              没有符合搜索条件的记录，请尝试其他关键字。
+              目前还没有载入任何时间表资料，请稍后再试或检查 Google Sheet 设定。
             </div>
           </div>
         </div>
@@ -570,7 +551,14 @@
 
 <script>
   // ============================
-  // ===== 1. 设定 Access Code 和学生资料 =====
+  // 0. Google Sheet CSV 位置（你的后台）
+  // ============================
+  // 如果将来换新 Sheet，只要把下面这条 link 换掉就可以：
+  const CSV_URL =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQY9srKI-EAsARYyhifRknDi3qcDdV-wY7AfQdG6Clx12Dtmp2A0ffCpAizDEZU_Kz6_A7ugfLIRuoY/pub?output=csv";
+
+  // ============================
+  // 1. 设定 Access Code 和学生资料
   // ============================
 
   const ACCESS_CODES = {
@@ -640,212 +628,99 @@
   };
 
   // ============================
-  // ===== 2. 设定补习时间表 SCHEDULE =====
+  // 2. 从 Google Sheet 载入时间表
   // ============================
 
-  const SCHEDULE = [
-    // 2025年12月1日（星期一） Lucas 家
-    {
-      date: "2025-12-01",
-      dateLabel: "2025年12月1日",
-      day: "星期一",
-      time: "7:00p.m.-9:00p.m.",
-      location: "Lucas 家",
-      students: ["Joey", "Joell", "Yi Xuan", "Vanessa"],
-      subject: "国文作文",
-      homework: "",
-      remark: ""
-    },
-    {
-      date: "2025-12-01",
-      dateLabel: "2025年12月1日",
-      day: "星期一",
-      time: "7:00p.m.-9:00p.m.",
-      location: "Lucas 家",
-      students: ["Jayden"],
-      subject: "国文作文 + 国文理解",
-      homework: "",
-      remark: ""
-    },
+  let SCHEDULE = [];
+  let scheduleLoaded = false;
+  let scheduleError = false;
 
-    // 2025年12月2日（星期二）
-    {
-      date: "2025-12-02",
-      dateLabel: "2025年12月2日",
-      day: "星期二",
-      time: "7:00p.m.-9:00p.m.",
-      location: "Lucas 家",
-      students: ["Vanessa", "Emily", "Lucas", "Jayden"],
-      subject: "科学（Science）",
-      homework: "",
-      remark: ""
-    },
+  function parseCSV(text) {
+    const rows = text.trim().split(/\r?\n/);
+    if (!rows.length) return [];
 
-    // 2025年12月3日（星期三）
-    {
-      date: "2025-12-03",
-      dateLabel: "2025年12月3日",
-      day: "星期三",
-      time: "7:00p.m.-9:00p.m.",
-      location: "Lucas 家",
-      students: ["Emily", "Lucas", "Jayden"],
-      subject: "地理（Geografi）",
-      homework: "",
-      remark: ""
-    },
+    const dataRows = rows.slice(1); // 第一行是标题
 
-    // 2025年12月4日（星期四）
-    {
-      date: "2025-12-04",
-      dateLabel: "2025年12月4日",
-      day: "星期四",
-      time: "7:00p.m.-9:00p.m.",
-      location: "Lucas 家",
-      students: ["Emily", "Lucas", "Jayden"],
-      subject: "历史（Sejarah）",
-      homework: "",
-      remark: ""
-    },
+    const result = [];
 
-    // 2025年12月6日（星期六）
-    {
-      date: "2025-12-06",
-      dateLabel: "2025年12月6日",
-      day: "星期六",
-      time: "5:00p.m.-7:00p.m.",
-      location: "Lucas 家",
-      students: ["Joey", "Joell", "Yi Xuan", "Jayden"],
-      subject: "数学",
-      homework: "",
-      remark: ""
-    },
-    {
-      date: "2025-12-06",
-      dateLabel: "2025年12月6日",
-      day: "星期六",
-      time: "5:00p.m.-7:00p.m.",
-      location: "Lucas 家",
-      students: ["Vanessa", "Lucas"],
-      subject: "ASK",
-      homework: "",
-      remark: ""
-    },
-    {
-      date: "2025-12-06",
-      dateLabel: "2025年12月6日",
-      day: "星期六",
-      time: "8:00p.m.-9:30p.m.",
-      location: "Lucas 家",
-      students: ["Joey", "Joell", "Yi Xuan", "Jayden"],
-      subject: "华文理解",
-      homework: "",
-      remark: ""
-    },
-    {
-      date: "2025-12-06",
-      dateLabel: "2025年12月6日",
-      day: "星期六",
-      time: "9:30p.m.-11:00p.m.",
-      location: "Lucas 家",
-      students: ["Vanessa"],
-      subject: "英文理解",
-      homework: "",
-      remark: ""
-    },
-    {
-      date: "2025-12-06",
-      dateLabel: "2025年12月6日",
-      day: "星期六",
-      time: "9:30p.m.-11:00p.m.",
-      location: "Lucas 家",
-      students: ["Jayden"],
-      subject: "英文理解 + 英文作文",
-      homework: "",
-      remark: ""
-    },
+    for (const row of dataRows) {
+      const fields = [];
+      let field = "";
+      let inQuotes = false;
 
-    // 2025年12月7日（星期日）
-    {
-      date: "2025-12-07",
-      dateLabel: "2025年12月7日",
-      day: "星期日",
-      time: "9:00a.m.-11:00a.m.",
-      location: "Lucas 家",
-      students: ["Yu Chen"],
-      subject: "数学",
-      homework: "",
-      remark: ""
-    },
-    {
-      date: "2025-12-07",
-      dateLabel: "2025年12月7日",
-      day: "星期日",
-      time: "12:00p.m.-2:00p.m.",
-      location: "Lucas 家",
-      students: ["Jayden", "Emily", "Vanessa", "Lucas"],
-      subject: "华文理解（补课）",
-      homework: "",
-      remark: "补课安排，请务必准时出席。"
-    },
-    {
-      date: "2025-12-07",
-      dateLabel: "2025年12月7日",
-      day: "星期日",
-      time: "2:00p.m.-4:00p.m.",
-      location: "Lucas 家",
-      students: ["Jayden", "Emily", "Vanessa", "Lucas"],
-      subject: "华文作文",
-      homework: "",
-      remark: ""
-    },
-    {
-      date: "2025-12-07",
-      dateLabel: "2025年12月7日",
-      day: "星期日",
-      time: "2:00p.m.-4:00p.m.",
-      location: "Lucas 家",
-      students: ["Yi Xuan"],
-      subject: "英文理解",
-      homework: "",
-      remark: ""
-    },
-    {
-      date: "2025-12-07",
-      dateLabel: "2025年12月7日",
-      day: "星期日",
-      time: "4:00p.m.-7:00p.m.",
-      location: "Lucas 家",
-      students: ["Jayden"],
-      subject: "数学",
-      homework: "",
-      remark: ""
-    },
-    {
-      date: "2025-12-07",
-      dateLabel: "2025年12月7日",
-      day: "星期日",
-      time: "5:00p.m.-7:00p.m.",
-      location: "Lucas 家",
-      students: ["Yi Xuan"],
-      subject: "国文作文",
-      homework: "",
-      remark: ""
-    },
-    {
-      date: "2025-12-07",
-      dateLabel: "2025年12月7日",
-      day: "星期日",
-      time: "5:00p.m.-7:00p.m.",
-      location: "Lucas 家",
-      students: ["Joey", "Joell"],
-      subject: "科学",
-      homework: "",
-      remark: ""
+      for (let i = 0; i < row.length; i++) {
+        const ch = row[i];
+
+        if (ch === '"') {
+          // 切换引号状态
+          inQuotes = !inQuotes;
+        } else if (ch === "," && !inQuotes) {
+          // 在非引号状态下遇到逗号 → 分隔字段
+          fields.push(field);
+          field = "";
+        } else {
+          field += ch;
+        }
+      }
+      fields.push(field);
+
+      // 预期栏位：date, day, time, location, students, subject, homework, remark
+      const [
+        date,
+        day,
+        time,
+        location,
+        studentsStr,
+        subject,
+        homework,
+        remark
+      ] = fields.map((f) => (f || "").trim());
+
+      if (!date && !subject && !studentsStr) continue; // 空行跳过
+
+      const students = studentsStr
+        ? studentsStr.split(/[,，]/).map((s) => s.trim()).filter(Boolean)
+        : [];
+
+      result.push({
+        date: date || "",
+        dateLabel: date || "",
+        day: day || "",
+        time: time || "",
+        location: location || "",
+        students,
+        subject: subject || "",
+        homework: homework || "",
+        remark: remark || ""
+      });
     }
-  ];
+    return result;
+  }
+
+  function loadSchedule() {
+    fetch(CSV_URL)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("载入失败");
+        }
+        return res.text();
+      })
+      .then((text) => {
+        SCHEDULE = parseCSV(text);
+        scheduleLoaded = true;
+        scheduleError = false;
+      })
+      .catch((err) => {
+        console.error("载入时间表失败：", err);
+        scheduleLoaded = true;
+        scheduleError = true;
+      });
+  }
+
+  loadSchedule();
 
   // ============================
-  // ===== 3. 登录与画面切换逻辑 =====
+  // 3. 登录与画面切换逻辑
   // ============================
 
   function normalizeName(name) {
@@ -867,6 +742,18 @@
 
     if (!user) {
       msg.textContent = "Access code 不正确，请确认后再输入。";
+      msg.className = "message message-error";
+      return;
+    }
+
+    if (!scheduleLoaded) {
+      msg.textContent = "系统正在载入最新时间表，请稍候几秒再尝试。";
+      msg.className = "message message-error";
+      return;
+    }
+
+    if (scheduleError) {
+      msg.textContent = "时间表载入失败，请稍后再试或联系老师检查 Google Sheet 设定。";
       msg.className = "message message-error";
       return;
     }
@@ -914,6 +801,10 @@
       }
     });
 
+  // ============================
+  // 4. 学生 / Admin 画面渲染
+  // ============================
+
   function renderStudentView(user) {
     const tbody = document.querySelector("#studentTable tbody");
     tbody.innerHTML = "";
@@ -921,6 +812,14 @@
 
     document.getElementById("studentNameInTip").textContent = user.fullName;
     document.getElementById("studentFullName").textContent = user.fullName;
+
+    if (!SCHEDULE.length) {
+      noData.classList.remove("hidden");
+      noData.textContent = "目前时间表尚未设定，请稍后再查看或联络老师。";
+      return;
+    } else {
+      noData.classList.add("hidden");
+    }
 
     const shortKey = normalizeName(user.shortName);
 
@@ -930,6 +829,7 @@
 
     if (!rows.length) {
       noData.classList.remove("hidden");
+      noData.textContent = "目前还没有找到属于该学生的补习安排，请稍后再查看或联络老师。";
       return;
     } else {
       noData.classList.add("hidden");
@@ -961,6 +861,16 @@
     const tbody = document.querySelector("#adminTable tbody");
     tbody.innerHTML = "";
 
+    const noData = document.getElementById("adminNoData");
+
+    if (!SCHEDULE.length) {
+      noData.classList.remove("hidden");
+      noData.textContent = "目前时间表尚未设定，请稍后再试或检查 Google Sheet。";
+      return;
+    } else {
+      noData.classList.add("hidden");
+    }
+
     const rows = [...SCHEDULE].sort((a, b) => {
       if (a.date === b.date) {
         return a.time.localeCompare(b.time);
@@ -982,8 +892,6 @@
       `;
       tbody.appendChild(tr);
     });
-
-    document.getElementById("adminNoData").classList.add("hidden");
   }
 
   function filterAdminTable() {
@@ -1007,6 +915,7 @@
     const noData = document.getElementById("adminNoData");
     if (visibleCount === 0) {
       noData.classList.remove("hidden");
+      noData.textContent = "没有符合搜索条件的记录，请尝试其他关键字。";
     } else {
       noData.classList.add("hidden");
     }

@@ -479,7 +479,7 @@
         </div>
 
         <div class="info-line">
-          当前登入学生：<span id="studentFullName"></span>
+          当前查看对象：<span id="studentFullName"></span>
         </div>
 
         <table id="studentTable">
@@ -645,19 +645,19 @@
       shortName: "Yi Xuan",
       code: "CYX6969"
     },
-     "JGJQ1234": {
+    "JGJQ1234": {
       role: "student",
       fullName: "Joell Goh Jia Qian",
       shortName: "Joell",
       code: "JGJQ1234"
     },
-     "VHMZ3333": {
+    "VHMZ3333": {
       role: "student",
       fullName: "Vanessa Heng Min Zhi",
       shortName: "Vanessa",
       code: "VHMZ3333"
-     },
-     "ALCZ0808": {
+    },
+    "ALCZ0808": {
       role: "student",
       fullName: "Aiwin Lim Chun Zhen",
       shortName: "Aiwin",
@@ -668,6 +668,15 @@
       fullName: "Choo Yan Han",
       shortName: "Yan Han",
       code: "CYH6699"
+    },
+
+    // 🌟 家庭共用 access code：Joey + Joell + Lucas
+    "JJL2025": {
+      role: "student",
+      fullName: "Joey、Joell、Lucas 家长",
+      shortName: "Joey", // 单人模式备用，不会用到
+      groupShortNames: ["Joey", "Joell", "Lucas"],
+      code: "JJL2025"
     }
   };
 
@@ -846,7 +855,7 @@
     });
 
   // ============================
-  // 4. 学生 / Admin 画面渲染
+  // 4. 学生 / 家庭 / Admin 画面渲染
   // ============================
 
   function renderStudentView(user) {
@@ -854,8 +863,14 @@
     tbody.innerHTML = "";
     const noData = document.getElementById("studentNoData");
 
-    document.getElementById("studentNameInTip").textContent = user.fullName;
-    document.getElementById("studentFullName").textContent = user.fullName;
+    // 是否为家庭账号（有 groupShortNames）
+    const isGroup = Array.isArray(user.groupShortNames) && user.groupShortNames.length > 0;
+    const displayName = isGroup
+      ? user.groupShortNames.join("、")
+      : user.fullName;
+
+    document.getElementById("studentNameInTip").textContent = displayName;
+    document.getElementById("studentFullName").textContent = displayName;
 
     if (!SCHEDULE.length) {
       noData.classList.remove("hidden");
@@ -865,10 +880,15 @@
       noData.classList.add("hidden");
     }
 
-    const shortKey = normalizeName(user.shortName);
+    let matchKeys;
+    if (isGroup) {
+      matchKeys = user.groupShortNames.map((n) => normalizeName(n));
+    } else {
+      matchKeys = [normalizeName(user.shortName)];
+    }
 
     const rows = SCHEDULE.filter((item) =>
-      item.students.some((s) => normalizeName(s) === shortKey)
+      item.students.some((s) => matchKeys.includes(normalizeName(s)))
     );
 
     if (!rows.length) {
@@ -967,7 +987,3 @@
 </script>
 </body>
 </html>
-
-
-
-

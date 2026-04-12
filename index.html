@@ -212,6 +212,34 @@
       box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.16);
     }
 
+    .password-wrap {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .password-wrap input {
+      flex: 1;
+    }
+
+    .toggle-password {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      cursor: pointer;
+      min-width: 72px;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+      transition: 0.15s ease;
+    }
+
+    .toggle-password:hover {
+      background: #f8fafc;
+    }
+
     .btn-row {
       display: flex;
       gap: 10px;
@@ -490,6 +518,30 @@
       color: #0f766e;
     }
 
+    .family-student-name {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 0.76rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .cell-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .homework-text,
+    .remark-text {
+      white-space: pre-line;
+      word-break: break-word;
+    }
+
     .muted {
       color: var(--muted-2);
     }
@@ -644,6 +696,15 @@
       .kpi-grid {
         grid-template-columns: 1fr;
       }
+
+      .password-wrap {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .toggle-password {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -672,7 +733,6 @@
     </header>
 
     <main class="section">
-      <!-- 登录区域 -->
       <section id="loginSection">
         <div class="card login-card">
           <div class="card-header">
@@ -683,11 +743,14 @@
           </div>
 
           <label for="accessCode">Access Code</label>
-          <input
-            id="accessCode"
-            type="password"
-            placeholder="请输入 access code，然后按 Enter 或点击按钮"
-          />
+          <div class="password-wrap">
+            <input
+              id="accessCode"
+              type="password"
+              placeholder="请输入 access code，然后按 Enter 或点击按钮"
+            />
+            <button type="button" class="toggle-password" onclick="togglePasswordVisibility()" aria-label="显示或隐藏 access code">显示</button>
+          </div>
 
           <div class="btn-row">
             <button class="btn btn-primary" onclick="handleLogin()">进入系统</button>
@@ -707,7 +770,6 @@
         </div>
       </section>
 
-      <!-- 主内容区域 -->
       <section id="mainSection" class="hidden">
         <div class="card">
           <div class="card-header">
@@ -729,7 +791,6 @@
             </div>
           </div>
 
-          <!-- 学生端 -->
           <div id="studentView" class="hidden">
             <div class="dashboard-grid">
               <div class="card" style="margin-top:0;">
@@ -760,7 +821,7 @@
                     </div>
                     <div class="rule-item">
                       <span class="rule-no">5</span>
-                      <div>晚上课程时间为 <strong>7:00 PM</strong>，建议尽早到达；个别情况下老师可能稍迟，请耐心等候。</div>
+                      <div>若晚上课程时间为 <strong>7:00 PM</strong>，建议尽早到达；个别情况下老师可能稍迟，请耐心等候。</div>
                     </div>
                     <div class="rule-item">
                       <span class="rule-no">6</span>
@@ -819,7 +880,6 @@
             </div>
           </div>
 
-          <!-- Admin 端 -->
           <div id="adminView" class="hidden">
             <div class="kpi-grid">
               <div class="kpi-card">
@@ -939,18 +999,12 @@
               </div>
             </div>
           </div>
-          <!-- /Admin -->
         </div>
       </section>
     </main>
   </div>
 
   <script>
-    // ============================
-    // 基本设定
-    // ============================
-    const MEET_LINK = "https://meet.google.com/wim-dixa-aca?authuser=2&pli=1";
-
     const CSV_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vQY9srKI-EAsARYyhifRknDi3qcDdV-wY7AfQdG6Clx12Dtmp2A0ffCpAizDEZU_Kz6_A7ugfLIRuoY/pub?output=csv";
 
@@ -991,9 +1045,6 @@
     let scheduleLoaded = false;
     let scheduleError = false;
 
-    // ============================
-    // 工具函数
-    // ============================
     function normalizeName(name) {
       return (name || "").toLowerCase().replace(/\s+/g, "");
     }
@@ -1049,16 +1100,8 @@
       const result = [];
 
       for (const cols of dataRows) {
-        const [
-          date,
-          day,
-          time,
-          location,
-          studentsStr,
-          subject,
-          homework,
-          remark
-        ] = cols.map(v => (v || "").trim());
+        const [date, day, time, location, studentsStr, subject, homework, remark] =
+          cols.map(v => (v || "").trim());
 
         if (!date && !day && !time && !location && !studentsStr && !subject && !homework && !remark) continue;
 
@@ -1087,14 +1130,10 @@
       if (!str) return NaN;
 
       let m = str.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
-      if (m) {
-        return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])).getTime();
-      }
+      if (m) return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])).getTime();
 
       m = str.match(/^(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/);
-      if (m) {
-        return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])).getTime();
-      }
+      if (m) return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])).getTime();
 
       m = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
       if (m) {
@@ -1121,7 +1160,6 @@
 
       if (ap.includes("p") && h < 12) h += 12;
       if (ap.includes("a") && h === 12) h = 0;
-
       return h * 60 + min;
     }
 
@@ -1129,9 +1167,7 @@
       const da = parseDateValue(a.dateLabel || a.date);
       const db = parseDateValue(b.dateLabel || b.date);
 
-      if (Number.isFinite(da) && Number.isFinite(db) && da !== db) {
-        return da - db;
-      }
+      if (Number.isFinite(da) && Number.isFinite(db) && da !== db) return da - db;
 
       if (!Number.isFinite(da) || !Number.isFinite(db)) {
         const fallback = (a.dateLabel || a.date).localeCompare(b.dateLabel || b.date, "zh-Hans");
@@ -1149,9 +1185,6 @@
       return Object.values(ACCESS_CODES).filter(user => user.role === "student").length;
     }
 
-    // ============================
-    // 载入时间表
-    // ============================
     function loadSchedule() {
       fetch(CSV_URL)
         .then(res => {
@@ -1170,9 +1203,6 @@
         });
     }
 
-    // ============================
-    // 登录 / 登出
-    // ============================
     function clearAccessCode() {
       const input = document.getElementById("accessCode");
       const msg = document.getElementById("loginMessage");
@@ -1254,9 +1284,6 @@
       clearAdminSearch();
     }
 
-    // ============================
-    // 学生端渲染
-    // ============================
     function renderStudentView(user) {
       const tbody = document.querySelector("#studentTable tbody");
       const noData = document.getElementById("studentNoData");
@@ -1283,23 +1310,33 @@
       noData.classList.add("hidden");
 
       rows.forEach(item => {
+        const matchedStudents = item.students.filter(s => matchKeys.includes(normalizeName(s)));
+        const whoNeedsClass = matchedStudents.length ? matchedStudents.join("、") : displayName;
+        const isGroupRow = isGroup;
+
+        const subjectCell = isGroupRow
+          ? `
+            <div class="cell-stack">
+              <span class="family-student-name">${escapeHtml(whoNeedsClass)}</span>
+              <span class="tag tag-subject">${escapeHtml(item.subject || "未注明")}</span>
+            </div>
+          `
+          : `<span class="tag tag-subject">${escapeHtml(item.subject || "未注明")}</span>`;
+
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${escapeHtml(item.dateLabel)}</td>
           <td>${escapeHtml(item.day)}</td>
           <td>${escapeHtml(item.time)}</td>
           <td>${escapeHtml(item.location)}</td>
-          <td><span class="tag tag-subject">${escapeHtml(item.subject || "未注明")}</span></td>
-          <td>${item.homework ? escapeHtml(item.homework) : '<span class="muted">（暂无资料）</span>'}</td>
-          <td>${item.remark ? escapeHtml(item.remark) : '<span class="muted">—</span>'}</td>
+          <td>${subjectCell}</td>
+          <td>${item.homework ? `<div class="homework-text">${escapeHtml(item.homework)}</div>` : '<span class="muted">（暂无资料）</span>'}</td>
+          <td>${item.remark ? `<div class="remark-text">${escapeHtml(item.remark)}</div>` : '<span class="muted">—</span>'}</td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    // ============================
-    // Admin 端渲染
-    // ============================
     function renderAdminTable() {
       const tbody = document.querySelector("#adminTable tbody");
       const noData = document.getElementById("adminNoData");
@@ -1384,14 +1421,24 @@
       filterAdminTable();
     }
 
-    // ============================
-    // 事件绑定
-    // ============================
+    function togglePasswordVisibility() {
+      const input = document.getElementById("accessCode");
+      const toggleBtn = document.querySelector(".toggle-password");
+      if (!input || !toggleBtn) return;
+
+      if (input.type === "password") {
+        input.type = "text";
+        toggleBtn.textContent = "隐藏";
+      } else {
+        input.type = "password";
+        toggleBtn.textContent = "显示";
+      }
+    }
+
     document.getElementById("accessCode").addEventListener("keyup", function (event) {
       if (event.key === "Enter") handleLogin();
     });
 
-    // 初始载入
     loadSchedule();
   </script>
 </body>

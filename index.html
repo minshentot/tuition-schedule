@@ -2,973 +2,1397 @@
 <html lang="zh-Hans">
 <head>
   <meta charset="UTF-8" />
-  <title>启缘教育 Teacher Ooi Tuition 补习资讯 搜索系统</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>启缘教育 · Teacher Ooi Tuition 学习管理系统</title>
   <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --panel-soft: #f8fafc;
+      --line: #e2e8f0;
+      --line-soft: #edf2f7;
+      --text: #0f172a;
+      --muted: #64748b;
+      --muted-2: #94a3b8;
+      --primary: #1d4ed8;
+      --primary-2: #0ea5e9;
+      --primary-soft: #dbeafe;
+      --success: #16a34a;
+      --warn-bg: #fffbea;
+      --warn-line: #fde68a;
+      --warn-text: #92400e;
+      --danger: #b91c1c;
+      --shadow-lg: 0 20px 50px rgba(15, 23, 42, 0.10);
+      --shadow-md: 0 10px 30px rgba(15, 23, 42, 0.06);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 12px;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: "Inter", "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
     }
 
     body {
       min-height: 100vh;
-      background: radial-gradient(circle at top left, #f8fafc 0, #e0f2fe 40%, #eef2ff 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      color: #0f172a;
+      background:
+        radial-gradient(circle at top left, #f8fbff 0%, #e8f0ff 35%, #f5f7fb 100%);
+      color: var(--text);
+      padding: 24px 14px;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
     }
 
     .container {
       width: 100%;
-      max-width: 960px;
-      background: #ffffffee;
-      border-radius: 18px;
-      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16);
-      padding: 24px 20px 28px;
-      backdrop-filter: blur(10px);
+      max-width: 1100px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 30px;
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
     }
 
-    @media (min-width: 768px) {
-      .container {
-        padding: 28px 32px 32px;
-      }
-    }
-
-    .title {
-      text-align: center;
-      font-size: clamp(1.4rem, 3vw, 1.8rem);
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      background: linear-gradient(120deg, #0f172a, #1d4ed8, #0ea5e9);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .subtitle {
-      text-align: center;
-      font-size: 0.88rem;
-      color: #64748b;
-      margin-bottom: 20px;
+    .topbar {
+      padding: 24px 22px 18px;
+      border-bottom: 1px solid var(--line-soft);
+      background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(239,246,255,0.95));
     }
 
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
+      gap: 8px;
+      padding: 7px 12px;
       border-radius: 999px;
       background: #e0f2fe;
       color: #0f172a;
-      font-size: 0.78rem;
-      margin-bottom: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: 1px solid rgba(14,165,233,0.12);
+      margin-bottom: 14px;
     }
 
     .badge-dot {
       width: 8px;
       height: 8px;
       border-radius: 999px;
-      background: #22c55e;
+      background: var(--success);
+      box-shadow: 0 0 0 6px rgba(34,197,94,0.12);
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .title-logo {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      object-fit: cover;
+      background: #fff;
+      border: 2px solid rgba(255,255,255,0.86);
+      box-shadow: 0 10px 25px rgba(29, 78, 216, 0.14);
+    }
+
+    .title-wrap {
+      flex: 1;
+      min-width: 240px;
+    }
+
+    .eyebrow {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .title {
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+      background: linear-gradient(120deg, #0f172a, #1d4ed8, #0284c7);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.7;
     }
 
     .section {
-      margin-top: 18px;
+      padding: 22px;
     }
 
     .card {
-      border-radius: 16px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      padding: 16px 14px 18px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md);
+      padding: 20px;
     }
 
-    @media (min-width: 768px) {
-      .card {
-        padding: 18px 18px 20px;
-      }
+    .card + .card {
+      margin-top: 16px;
     }
 
     .card-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      gap: 8px;
+      align-items: flex-start;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
     }
 
     .card-title {
-      font-weight: 700;
-      font-size: 0.98rem;
-      color: #0f172a;
+      font-size: 1.02rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
     }
 
     .card-subtitle {
-      font-size: 0.8rem;
-      color: #94a3b8;
+      font-size: 0.84rem;
+      color: var(--muted-2);
+      line-height: 1.6;
+    }
+
+    .login-card {
+      max-width: 560px;
+      margin: 0 auto;
     }
 
     label {
-      font-size: 0.85rem;
-      color: #0f172a;
-      font-weight: 600;
-      margin-bottom: 4px;
       display: block;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
     }
 
-    input[type="password"], input[type="text"] {
+    input[type="password"],
+    input[type="text"] {
       width: 100%;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid #cbd5f5;
-      background: #ffffff;
-      font-size: 0.9rem;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      font-size: 0.95rem;
       outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      transition: 0.18s ease;
+      color: var(--text);
     }
 
-    input[type="password"]:focus, input[type="text"]:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.18);
+    input[type="password"]:focus,
+    input[type="text"]:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.16);
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
       border: none;
-      border-radius: 999px;
-      padding: 8px 16px;
-      margin-top: 8px;
-      font-size: 0.88rem;
-      font-weight: 600;
+      border-radius: 15px;
+      padding: 12px 18px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
       cursor: pointer;
-      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      transition: 0.15s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
       color: white;
-      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
-      transition: transform 0.08s ease, box-shadow 0.12s ease, opacity 0.15s ease;
+      box-shadow: 0 12px 24px rgba(29, 78, 216, 0.23);
     }
 
-    .btn:hover {
+    .btn-primary:hover {
       transform: translateY(-1px);
-      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.45);
-      opacity: 0.96;
+      box-shadow: 0 14px 26px rgba(29, 78, 216, 0.28);
+      text-decoration: none;
     }
 
-    .btn:active {
-      transform: translateY(0);
-      box-shadow: 0 5px 12px rgba(37, 99, 235, 0.35);
+    .btn-secondary {
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+    }
+
+    .btn-secondary:hover {
+      background: #f8fafc;
+      text-decoration: none;
     }
 
     .btn-ghost {
       background: transparent;
-      color: #64748b;
-      box-shadow: none;
-      padding-inline: 10px;
-      margin-top: 0;
-      border: none;
+      color: var(--muted);
+      border: 1px solid transparent;
+      padding: 10px 14px;
+      border-radius: 14px;
       cursor: pointer;
-      font-size: 0.82rem;
+      font-size: 0.84rem;
+      font-weight: 700;
     }
 
     .btn-ghost:hover {
-      background: #e2e8f0;
-      box-shadow: none;
-      transform: none;
-    }
-
-    .helper-text {
-      font-size: 0.78rem;
-      color: #94a3b8;
-      margin-top: 4px;
-      line-height: 1.5;
+      background: #f1f5f9;
     }
 
     .message {
-      margin-top: 8px;
-      font-size: 0.8rem;
+      margin-top: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
     }
 
     .message-error {
-      color: #b91c1c;
+      color: var(--danger);
+    }
+
+    .helper-text {
+      margin-top: 10px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .hint-list {
+      margin-top: 10px;
+      padding-left: 18px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.7;
     }
 
     .hidden {
       display: none !important;
     }
 
-    .hint-list {
-      font-size: 0.8rem;
-      color: #64748b;
-      margin-top: 6px;
-      list-style: disc;
-      padding-left: 16px;
-    }
-
-    .hint-list li + li {
-      margin-top: 2px;
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 16px;
+      margin-bottom: 16px;
     }
 
     .section-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: #0f172a;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 12px;
     }
 
-    .section-title span.icon {
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      background: #2563eb;
+    .icon-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.72rem;
-      color: white;
-    }
-
-    .parent-tip {
       font-size: 0.82rem;
-      color: #4b5563;
-      background: #fefce8;
-      border: 1px solid #facc15;
-      border-radius: 12px;
-      padding: 10px 10px;
-      margin-bottom: 10px;
-      line-height: 1.5;
+      box-shadow: 0 8px 18px rgba(29, 78, 216, 0.18);
     }
 
-    .parent-tip strong {
-      color: #854d0e;
+    .notice-box {
+      padding: 16px;
+      border-radius: 18px;
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-line);
+      color: #4b5563;
+      line-height: 1.8;
+      font-size: 0.88rem;
+    }
+
+    .notice-box strong {
+      color: var(--warn-text);
+    }
+
+    .rules-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .rule-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(250, 204, 21, 0.28);
+    }
+
+    .rule-no {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: #facc15;
+      color: #713f12;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.76rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .link-card {
+      background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+      border: 1px solid #dbeafe;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+    }
+
+    .link-card + .link-card {
+      margin-top: 12px;
+    }
+
+    .link-card h3 {
+      font-size: 0.94rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .link-card p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 12px;
     }
 
     .info-line {
-      font-size: 0.86rem;
-      margin-bottom: 4px;
-      color: #111827;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      color: var(--text);
     }
 
     .info-line span {
-      font-weight: 600;
-      color: #1d4ed8;
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
     }
 
     table {
       width: 100%;
+      min-width: 760px;
       border-collapse: collapse;
-      margin-top: 10px;
-      font-size: 0.8rem;
+      font-size: 0.84rem;
     }
 
     thead {
-      background: #e5effe;
+      background: #f8fbff;
     }
 
-    th, td {
-      padding: 6px 6px;
-      border-bottom: 1px solid #e5e7eb;
+    th,
+    td {
+      padding: 12px 12px;
+      border-bottom: 1px solid var(--line-soft);
       text-align: left;
       vertical-align: top;
+      line-height: 1.65;
     }
 
     th {
-      font-weight: 700;
-      color: #1f2937;
-      font-size: 0.78rem;
       white-space: nowrap;
+      font-size: 0.78rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #334155;
+      font-weight: 800;
     }
 
     tbody tr:nth-child(even) {
-      background: #f9fafb;
+      background: #fcfdff;
+    }
+
+    tbody tr:hover {
+      background: #f8fbff;
     }
 
     .tag {
       display: inline-flex;
-      padding: 2px 7px;
+      align-items: center;
+      padding: 4px 10px;
       border-radius: 999px;
-      font-size: 0.7rem;
-      background: #e0f2fe;
-      color: #0369a1;
+      font-size: 0.76rem;
+      font-weight: 700;
+      white-space: nowrap;
+      line-height: 1.2;
     }
 
-    /* 科目标签：改成紫色风格 */
     .tag-subject {
-      background: #f3e8ff;  /* 淡紫背景 */
-      color: #7e22ce;       /* 深紫文字 */
+      background: #f3e8ff;
+      color: #7e22ce;
     }
 
-    .small-note {
-      font-size: 0.74rem;
-      color: #94a3b8;
-      margin-top: 8px;
+    .tag-admin {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .tag-student {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .tag-family {
+      background: #ecfeff;
+      color: #0f766e;
+    }
+
+    .muted {
+      color: var(--muted-2);
+    }
+
+    .empty-state {
+      padding: 18px;
+      text-align: center;
+      font-size: 0.84rem;
+      color: var(--muted-2);
+      border: 1px dashed #cbd5e1;
+      border-radius: 16px;
+      background: #fcfdff;
+      margin-top: 12px;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.7;
     }
 
     .admin-layout {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 16px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
+      margin-bottom: 14px;
     }
 
-    @media (min-width: 900px) {
-      .admin-layout {
-        flex-direction: row;
-        align-items: flex-start;
-      }
-      .admin-left {
-        flex: 0 0 260px;
-      }
-      .admin-right {
-        flex: 1;
-      }
+    .kpi-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
     }
 
-    .admin-note-list {
-      font-size: 0.8rem;
-      color: #4b5563;
-      padding-left: 16px;
-      list-style: decimal;
-      margin-top: 6px;
+    .kpi-label {
+      font-size: 0.76rem;
+      color: var(--muted-2);
+      margin-bottom: 6px;
     }
 
-    .admin-note-list li + li {
-      margin-top: 4px;
+    .kpi-value {
+      font-size: 1.18rem;
+      font-weight: 900;
+      color: var(--text);
     }
 
     details {
-      margin-top: 6px;
-      font-size: 0.8rem;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: #fff;
     }
 
     details summary {
       cursor: pointer;
-      color: #2563eb;
-      font-weight: 600;
+      font-weight: 800;
+      color: var(--primary);
       list-style: none;
     }
 
+    details summary::-webkit-details-marker {
+      display: none;
+    }
+
     details[open] summary {
-      margin-bottom: 4px;
+      margin-bottom: 8px;
+    }
+
+    .admin-note-list {
+      padding-left: 18px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.7;
     }
 
     .search-row {
       display: flex;
-      gap: 8px;
       align-items: center;
-      margin-top: 6px;
+      gap: 10px;
       flex-wrap: wrap;
+      margin-bottom: 12px;
     }
 
     .search-input {
       flex: 1;
+      min-width: 220px;
     }
 
-    .search-input input {
-      width: 100%;
-    }
-
-    .no-data {
-      font-size: 0.8rem;
-      color: #9ca3af;
-      margin-top: 8px;
-      text-align: center;
-    }
-
-    .highlight-name {
-      font-weight: 700;
-      color: #0f172a;
-    }
-
-    .title-row {
+    .toolbar {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 12px;
+      gap: 8px;
       flex-wrap: wrap;
-      margin-bottom: 10px;
     }
 
-    .title-logo {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      object-fit: cover;
+    @media (max-width: 980px) {
+      .dashboard-grid,
+      .admin-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .kpi-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 12px 8px;
+      }
+
+      .topbar,
+      .section,
+      .card {
+        padding: 16px;
+      }
+
+      .title-logo {
+        width: 54px;
+        height: 54px;
+      }
+
+      .btn-row,
+      .toolbar,
+      .search-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn,
+      .btn-ghost {
+        width: 100%;
+      }
+
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-<div class="container">
-  <div class="badge">
-    <span class="badge-dot"></span>
-    Teacher Ooi Tuition • 补习时间 & 功课查询
-  </div>
-
-  <!-- 标题 + 圆形 Logo -->
-  <div class="title-row">
-    <img
-      class="title-logo"
-      src="https://raw.githubusercontent.com/minshentot/tuition-schedule/db6f9cfa00e2ca1cdc64c84b1d95179792cda7fb/ms%202024%20chibi%201.png"
-      alt="Teacher Ooi Logo"
-    />
-    <h1 class="title">Teacher Ooi Tuition 补习资讯 搜索系统</h1>
-  </div>
-
-  <p class="subtitle">请输入老师提供的 access code，以查看补习时间、科目与功课安排</p>
-
-  <!-- 登录区域 -->
-  <section id="loginSection" class="section">
-    <div class="card">
-      <div class="card-header">
-        <div>
-          <div class="card-title">请输入 Access Code</div>
-          <div class="card-subtitle">学生 / 家长请使用老师给你的专属 access code</div>
-        </div>
+  <div class="container">
+    <header class="topbar">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        启缘教育 · Teacher Ooi Tuition
       </div>
 
-      <label for="accessCode">Access Code</label>
-      <input id="accessCode" type="password" placeholder="在这里输入 access code，然后按 Enter 或按钮" />
-      <button class="btn" onclick="handleLogin()">
-        进入补习资讯
-      </button>
-
-      <div id="loginMessage" class="message"></div>
-
-      <ul class="hint-list">
-        <li>每位学生 / 家长都有个人专属 access code。</li>
-        <li>如忘记或遗失，请直接向老师索取新的 access code。</li>
-      </ul>
-      <p class="helper-text">
-        温馨提醒：本系统只负责显示排课与功课资讯，不会在画面上显示任何 access code 详情，以保护所有学生与家庭的隐私。
-      </p>
-    </div>
-  </section>
-
-  <!-- 主内容区域（登录后显示） -->
-  <section id="mainSection" class="section hidden">
-    <div class="card">
-      <div class="card-header">
-        <div>
-          <div class="card-title" id="welcomeTitle"></div>
-          <div class="card-subtitle" id="welcomeSubtitle"></div>
+      <div class="title-row">
+        <img
+          class="title-logo"
+          src="https://raw.githubusercontent.com/minshentot/tuition-schedule/db6f9cfa00e2ca1cdc64c84b1d95179792cda7fb/ms%202024%20chibi%201.png"
+          alt="Teacher Ooi Logo"
+        />
+        <div class="title-wrap">
+          <div class="eyebrow">启缘教育 · TEACHER OOI TUITION</div>
+          <h1 class="title">学习管理系统</h1>
+          <p id="heroSubtitle" class="subtitle">
+            请输入老师提供的 access code，以查看补习时间、科目安排与功课资讯。
+          </p>
         </div>
-        <button class="btn-ghost" onclick="handleLogout()">退出 / 切换账号</button>
       </div>
+    </header>
 
-      <!-- 学生 / 家长视图 -->
-      <div id="studentView" class="hidden">
-        <div class="section-title">
-          <span class="icon">✓</span>
-          <span>给家长 / 学生的小提醒</span>
-        </div>
-
-        <div class="parent-tip">
-          <strong>温馨提醒：</strong>
-          欢迎来到 <strong>Teacher Ooi Tuition 补习资讯搜索系统</strong>。以下是
-          <span id="studentNameInTip" class="highlight-name"></span>
-          近期的补习时间与科目安排。<br><br>
-          老师若有临时调整（时间变动、加课、改科目），会在这里更新，请家长：<br>
-          • 建议每周至少查看一次；<br>
-          • 如对时间或功课有疑问，欢迎直接 WhatsApp 老师确认；<br>
-          • 若学生当天身体不适或有重要活动，请尽早通知老师，以便安排补课。
-        </div>
-
-        <div class="info-line">
-          当前查看对象：<span id="studentFullName"></span>
-        </div>
-
-        <table id="studentTable">
-          <thead>
-          <tr>
-            <th>日期</th>
-            <th>星期</th>
-            <th>时间</th>
-            <th>地点</th>
-            <th>科目</th>
-            <th>功课 / 作业</th>
-            <th>备注</th>
-          </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-        <div id="studentNoData" class="no-data hidden">
-          目前还没有找到属于该学生的补习安排，请稍后再查看或联络老师。
-        </div>
-        <p class="small-note">
-          提示：若有考试前加课、补课安排，请特别留意「备注」栏。
-        </p>
-      </div>
-
-      <!-- Admin 视图（只有知道 admin code 的人才进得到） -->
-      <div id="adminView" class="hidden">
-        <div class="admin-layout">
-          <div class="admin-left">
-            <div class="section-title">
-              <span class="icon">A</span>
-              <span>老师专用排课总览</span>
+    <main class="section">
+      <!-- 登录区域 -->
+      <section id="loginSection">
+        <div class="card login-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">登录系统</div>
+              <div class="card-subtitle">学生 / 家长请使用老师提供的专属 access code。</div>
             </div>
-            <p class="info-line">
-              当前模式：<span style="font-weight:700;color:#1d4ed8;">老师管理模式（Admin）</span>
-            </p>
-            <p class="info-line" style="margin-top:4px;">
-              本页面所有排课资料，都是由老师在 Google Sheet 中编辑，网页会自动同步最新资讯。
-            </p>
-
-            <details>
-              <summary>📱 手机上快速修改时间表（给老师）</summary>
-              <ol class="admin-note-list">
-                <li>打开 Google Sheet（用你的 Gmail 帐号登入）。</li>
-                <li>找到这张时间表，直接修改日期 / 时间 / 学生名单 / 科目 / 功课 / 备注。</li>
-                <li>Sheet 自动储存，不用按保存。</li>
-                <li>家长刷新网页后，就会看到最新的排课。</li>
-              </ol>
-            </details>
-
-            <details>
-              <summary>📝 更改 access code / 新增学生（给老师）</summary>
-              <ul class="admin-note-list">
-                <li>access code 依然写在网页代码的 <code>ACCESS_CODES</code> 里面。</li>
-                <li><code>shortName</code> 要跟 Google Sheet 的「students」栏里用的名字一致（例如 "Lucas"）。</li>
-                <li>要换 access code：只改该学生那一段的 <code>code: "……"</code>。</li>
-                <li>要加新学生：复制一小段，改名字和 code 即可。</li>
-              </ul>
-            </details>
           </div>
 
-          <div class="admin-right">
-            <div class="card-subtitle" style="margin-bottom:6px;">完整排课总览（仅老师看得到）</div>
-            <div class="search-row">
-              <div class="search-input">
-                <input id="adminSearch" type="text" placeholder="快速搜索：学生名字 / 科目 / 日期 关键字…" oninput="filterAdminTable()" />
+          <label for="accessCode">Access Code</label>
+          <input
+            id="accessCode"
+            type="password"
+            placeholder="请输入 access code，然后按 Enter 或点击按钮"
+          />
+
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="handleLogin()">进入系统</button>
+            <button class="btn btn-secondary" onclick="clearAccessCode()">清除输入</button>
+          </div>
+
+          <div id="loginMessage" class="message"></div>
+
+          <ul class="hint-list">
+            <li>每位学生 / 家长都有专属 access code。</li>
+            <li>如忘记或遗失，请直接向老师索取新的 access code。</li>
+          </ul>
+
+          <p class="helper-text">
+            本系统只显示与当前账号相关的课程资料，不会公开其他学生资料与 code。
+          </p>
+        </div>
+      </section>
+
+      <!-- 主内容区域 -->
+      <section id="mainSection" class="hidden">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div id="welcomeTitle" class="card-title"></div>
+              <div id="welcomeSubtitle" class="card-subtitle"></div>
+            </div>
+
+            <div class="toolbar">
+              <a
+                id="meetTopBtn"
+                class="btn btn-secondary hidden"
+                href="https://meet.google.com/wim-dixa-aca?authuser=2&pli=1"
+                target="_blank"
+                rel="noopener noreferrer"
+              >🎥 进入网课</a>
+
+              <button class="btn-ghost" onclick="handleLogout()">退出 / 切换账号</button>
+            </div>
+          </div>
+
+          <!-- 学生端 -->
+          <div id="studentView" class="hidden">
+            <div class="dashboard-grid">
+              <div class="card" style="margin-top:0;">
+                <div class="section-title">
+                  <span class="icon-badge">📌</span>
+                  <span>上课需知</span>
+                </div>
+
+                <div class="notice-box">
+                  <strong>课堂提醒：</strong>欢迎来到 <strong>启缘教育 · Teacher Ooi Tuition 学习管理系统</strong>。请家长与学生留意以下安排与说明。
+
+                  <div class="rules-list">
+                    <div class="rule-item">
+                      <span class="rule-no">1</span>
+                      <div>请于上课前至少 <strong>5分钟</strong> 做好准备，以便课程准时开始。</div>
+                    </div>
+                    <div class="rule-item">
+                      <span class="rule-no">2</span>
+                      <div>如需请假、缺课或临时无法出席，请 <strong>尽早通知老师</strong>，方便安排补课。</div>
+                    </div>
+                    <div class="rule-item">
+                      <span class="rule-no">3</span>
+                      <div>上课期间请专心听讲，<strong>禁止聊天或玩手机</strong>；手机仅限课堂学习用途。</div>
+                    </div>
+                    <div class="rule-item">
+                      <span class="rule-no">4</span>
+                      <div>请保持良好纪律，避免打扰其他同学学习。</div>
+                    </div>
+                    <div class="rule-item">
+                      <span class="rule-no">5</span>
+                      <div>晚上课程时间为 <strong>7:00 PM</strong>，建议尽早到达；个别情况下老师可能稍迟，请耐心等候。</div>
+                    </div>
+                    <div class="rule-item">
+                      <span class="rule-no">6</span>
+                      <div>建议家长 / 学生 <strong>每天至少查看一次</strong> 本系统，以获取最新课程与功课安排。</div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <span class="small-note">例如：<code>Lucas</code>、<code>数学</code>、<code>12月7日</code></span>
+
+              <div>
+                <div class="link-card">
+                  <h3>🌐 网课链接</h3>
+                  <p>如当天为线上课，可直接点击以下按钮进入 Google Meet 课堂。</p>
+                  <a
+                    class="btn btn-primary"
+                    href="https://meet.google.com/wim-dixa-aca?authuser=2&pli=1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >点击进入网课课堂</a>
+                </div>
+
+                <div class="link-card">
+                  <h3>📣 温馨提醒</h3>
+                  <p>若老师有临时调整时间、补课、换科目或备注更新，会优先显示在本系统，请记得每日查看。</p>
+                </div>
+              </div>
             </div>
 
-            <table id="adminTable">
-              <thead>
-              <tr>
-                <th>日期</th>
-                <th>星期</th>
-                <th>时间</th>
-                <th>地点</th>
-                <th>学生</th>
-                <th>科目</th>
-                <th>功课 / 作业</th>
-                <th>备注</th>
-              </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-            <div id="adminNoData" class="no-data hidden">
-              目前还没有载入任何时间表资料，请稍后再试或检查 Google Sheet 设定。
+            <div class="info-line">
+              当前查看对象：<span id="studentFullName"></span>
+            </div>
+
+            <div class="table-wrap">
+              <table id="studentTable">
+                <thead>
+                  <tr>
+                    <th>日期</th>
+                    <th>星期</th>
+                    <th>时间</th>
+                    <th>地点</th>
+                    <th>科目</th>
+                    <th>功课 / 作业</th>
+                    <th>备注</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+
+            <div id="studentNoData" class="empty-state hidden">
+              目前还没有找到属于该学生的补习安排，请稍后再查看或直接联系老师。
+            </div>
+
+            <div class="footer-note">
+              提示：若有考试前加课、临时补课或特别安排，请特别留意「备注」栏内容。
             </div>
           </div>
+
+          <!-- Admin 端 -->
+          <div id="adminView" class="hidden">
+            <div class="kpi-grid">
+              <div class="kpi-card">
+                <div class="kpi-label">系统身份</div>
+                <div class="kpi-value">Admin</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label">学生 / 家庭账号数量</div>
+                <div id="studentCodeCount" class="kpi-value">0</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label">当前课程记录总数</div>
+                <div id="scheduleCount" class="kpi-value">0</div>
+              </div>
+            </div>
+
+            <div class="admin-layout">
+              <div class="stack">
+                <div class="card" style="margin-top:0;">
+                  <div class="section-title">
+                    <span class="icon-badge">🧭</span>
+                    <span>老师管理说明</span>
+                  </div>
+                  <p class="helper-text">
+                    本页面显示全部学生排课资料，网页内容由 Google Sheet 自动同步。老师可通过总表快速搜索学生、科目、日期与功课。
+                  </p>
+                </div>
+
+                <details>
+                  <summary>📱 手机上快速修改时间表</summary>
+                  <ol class="admin-note-list">
+                    <li>打开 Google Sheet，并以你的 Gmail 帐号登入。</li>
+                    <li>直接修改日期、时间、学生、科目、功课或备注。</li>
+                    <li>Google Sheet 会自动保存，无需手动点击保存。</li>
+                    <li>家长 / 学生刷新网页后，就会看到更新后的内容。</li>
+                  </ol>
+                </details>
+
+                <details>
+                  <summary>🔑 Access Code 管理说明</summary>
+                  <ul class="admin-note-list">
+                    <li>所有 access code 资料仍储存在网页代码中的 <code>ACCESS_CODES</code> 对象。</li>
+                    <li><code>shortName</code> 必须与 Google Sheet 的 <code>students</code> 栏名字一致。</li>
+                    <li>若需新增学生，复制一个对象后修改姓名、shortName 与 code 即可。</li>
+                    <li>若是家庭共用 code，可使用 <code>groupShortNames</code> 让一个账号显示多位学生资料。</li>
+                  </ul>
+                </details>
+              </div>
+
+              <div class="stack">
+                <div class="card" style="margin-top:0;">
+                  <div class="card-header">
+                    <div>
+                      <div class="card-title">完整排课总览</div>
+                      <div class="card-subtitle">可按学生、科目、日期、地点或备注关键字快速搜索。</div>
+                    </div>
+                  </div>
+
+                  <div class="search-row">
+                    <div class="search-input">
+                      <input
+                        id="adminSearch"
+                        type="text"
+                        placeholder="例如：Lucas / 数学 / 星期四 / 7:00 PM"
+                        oninput="filterAdminTable()"
+                      />
+                    </div>
+                    <button class="btn btn-secondary" onclick="clearAdminSearch()">清除搜索</button>
+                  </div>
+
+                  <div class="table-wrap">
+                    <table id="adminTable">
+                      <thead>
+                        <tr>
+                          <th>日期</th>
+                          <th>星期</th>
+                          <th>时间</th>
+                          <th>地点</th>
+                          <th>学生</th>
+                          <th>科目</th>
+                          <th>功课 / 作业</th>
+                          <th>备注</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+
+                  <div id="adminNoData" class="empty-state hidden">
+                    目前还没有载入任何时间表资料，请稍后再试或检查 Google Sheet 设定。
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <div>
+                      <div class="card-title">Access Code 总览</div>
+                      <div class="card-subtitle">此区仅限 Admin 可见，用于记录所有学生 / 家庭 / 管理员 code。</div>
+                    </div>
+                  </div>
+
+                  <div class="table-wrap">
+                    <table id="codeTable">
+                      <thead>
+                        <tr>
+                          <th>姓名</th>
+                          <th>Short Name</th>
+                          <th>Access Code</th>
+                          <th>身份</th>
+                          <th>备注</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /Admin -->
         </div>
-      </div>
+      </section>
+    </main>
+  </div>
 
-    </div>
-  </section>
-</div>
+  <script>
+    // ============================
+    // 基本设定
+    // ============================
+    const MEET_LINK = "https://meet.google.com/wim-dixa-aca?authuser=2&pli=1";
 
-<script>
-  // ============================
-  // 0. Google Sheet CSV 位置（你的后台）
-  // ============================
-  const CSV_URL =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQY9srKI-EAsARYyhifRknDi3qcDdV-wY7AfQdG6Clx12Dtmp2A0ffCpAizDEZU_Kz6_A7ugfLIRuoY/pub?output=csv";
+    const CSV_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vQY9srKI-EAsARYyhifRknDi3qcDdV-wY7AfQdG6Clx12Dtmp2A0ffCpAizDEZU_Kz6_A7ugfLIRuoY/pub?output=csv";
 
-  // ============================
-  // 1. 设定 Access Code 和学生资料
-  // ============================
+    const ACCESS_CODES = {
+      "totadmin2024": {
+        role: "admin",
+        fullName: "Teacher Ooi",
+        shortName: "ADMIN",
+        code: "totadmin2024",
+        remark: "系统管理员"
+      },
 
-  const ACCESS_CODES = {
-    "totadmin2024": {
-      role: "admin",
-      fullName: "Teacher Ooi",
-      shortName: "ADMIN",
-      code: "totadmin2024"
-    },
+      "LGCZ0203": { role: "student", fullName: "Lucas Goh Cheng Ze", shortName: "Lucas", code: "LGCZ0203", remark: "学生账号" },
+      "JGJQ0423": { role: "student", fullName: "Joey Goh Jia Qi", shortName: "Joey", code: "JGJQ0423", remark: "学生账号" },
+      "JKJW0716": { role: "student", fullName: "Jayden Kang Jia Wei", shortName: "Jayden", code: "JKJW0716", remark: "学生账号" },
+      "WO0416":   { role: "student", fullName: "Wendy Ong", shortName: "Wendy", code: "WO0416", remark: "学生账号" },
+      "GYC1028":  { role: "student", fullName: "Goh Yu Chen", shortName: "Yu Chen", code: "GYC1028", remark: "学生账号" },
+      "GYS0414":  { role: "student", fullName: "Goh Yu Sen", shortName: "Yu Sen", code: "GYS0414", remark: "学生账号" },
+      "EAHY0526": { role: "student", fullName: "Emily Ang Hui Yin", shortName: "Emily", code: "EAHY0526", remark: "学生账号" },
+      "CYX0330":  { role: "student", fullName: "Choo Yi Xuan", shortName: "Yi Xuan", code: "CYX0330", remark: "学生账号" },
+      "JGJQ1234": { role: "student", fullName: "Joell Goh Jia Qian", shortName: "Joell", code: "JGJQ1234", remark: "学生账号" },
+      "VHMZ0409": { role: "student", fullName: "Vanessa Heng Min Zhi", shortName: "Vanessa", code: "VHMZ0409", remark: "学生账号" },
+      "ALCZ1025": { role: "student", fullName: "Aiwin Lim Chun Zhen", shortName: "Aiwin", code: "ALCZ1025", remark: "学生账号" },
+      "CYH0223":  { role: "student", fullName: "Choo Yan Han", shortName: "Yan Han", code: "CYH0223", remark: "学生账号" },
+      "ATYX0320": { role: "student", fullName: "Ashley Teh Yin Xuan", shortName: "Ashley", code: "ATYX0320", remark: "学生账号" },
 
-    "LGCZ0203": { role: "student", fullName: "Lucas Goh Cheng Ze", shortName: "Lucas", code: "LGCZ0203" },
-    "JGJQ0423": { role: "student", fullName: "Joey Goh Jia Qi", shortName: "Joey", code: "JGJQ0423" },
-    "JKJW0716": { role: "student", fullName: "Jayden Kang Jia Wei", shortName: "Jayden", code: "JKJW0716" },
-    "WO0416":   { role: "student", fullName: "Wendy Ong", shortName: "Wendy", code: "WO0416" },
-    "GYC1028":  { role: "student", fullName: "Goh Yu Chen", shortName: "Yu Chen", code: "GYC1028" },
-    "GYS0414":  { role: "student", fullName: "Goh Yu Sen", shortName: "Yu Sen", code: "GYS0414" },
-    "EAHY0526": { role: "student", fullName: "Emily Ang Hui Yin", shortName: "Emily", code: "EAHY0526" },
-    "CYX0330":  { role: "student", fullName: "Choo Yi Xuan", shortName: "Yi Xuan", code: "CYX0330" },
-    "JGJQ1234": { role: "student", fullName: "Joell Goh Jia Qian", shortName: "Joell", code: "JGJQ1234" },
-    "VHMZ0409": { role: "student", fullName: "Vanessa Heng Min Zhi", shortName: "Vanessa", code: "VHMZ0409" },
-    "ALCZ1025": { role: "student", fullName: "Aiwin Lim Chun Zhen", shortName: "Aiwin", code: "ALCZ1025" },
-    "CYH0223":  { role: "student", fullName: "Choo Yan Han", shortName: "Yan Han", code: "CYH0223" },
-    "ATYX0320":  { role: "student", fullName: "Ashley Teh Yin Xuan", shortName: "Ashley", code: "ATYX0320" },
+      "JJLV2026": {
+        role: "student",
+        fullName: "Joey、Joell、Lucas、Vanessa家长",
+        shortName: "Joey",
+        groupShortNames: ["Joey", "Joell", "Lucas", "Vanessa"],
+        code: "JJLV2026",
+        remark: "家庭共用账号"
+      }
+    };
 
-    // 🌟 家庭共用：Joey + Joell + Lucas + Vanessa（如果你有在用）
-    "JJLV2026": {
-      role: "student",
-      fullName: "Joey、Joell、Lucas、Vanessa家长",
-      shortName: "Joey",
-      groupShortNames: ["Joey", "Joell", "Lucas","Vanessa"],
-      code: "JJLV2026"
+    let SCHEDULE = [];
+    let scheduleLoaded = false;
+    let scheduleError = false;
+
+    // ============================
+    // 工具函数
+    // ============================
+    function normalizeName(name) {
+      return (name || "").toLowerCase().replace(/\s+/g, "");
     }
-  };
 
-  // ============================
-  // 2. 从 Google Sheet 载入时间表
-  // ============================
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
 
-  let SCHEDULE = [];
-  let scheduleLoaded = false;
-  let scheduleError = false;
-
-  function parseCSV(text) {
-    const rows = text.trim().split(/\r?\n/);
-    if (!rows.length) return [];
-
-    const dataRows = rows.slice(1); // 第一行是标题
-    const result = [];
-
-    for (const row of dataRows) {
-      const fields = [];
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
       let field = "";
       let inQuotes = false;
 
-      for (let i = 0; i < row.length; i++) {
-        const ch = row[i];
-        if (ch === '"') inQuotes = !inQuotes;
-        else if (ch === "," && !inQuotes) {
-          fields.push(field);
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const next = text[i + 1];
+
+        if (char === '"') {
+          if (inQuotes && next === '"') {
+            field += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === "," && !inQuotes) {
+          row.push(field);
           field = "";
-        } else field += ch;
+        } else if ((char === "\n" || char === "\r") && !inQuotes) {
+          if (char === "\r" && next === "\n") i++;
+          row.push(field);
+          rows.push(row);
+          row = [];
+          field = "";
+        } else {
+          field += char;
+        }
       }
-      fields.push(field);
 
-      const [
-        date,
-        day,
-        time,
-        location,
-        studentsStr,
-        subject,
-        homework,
-        remark
-      ] = fields.map((f) => (f || "").trim());
+      if (field.length || row.length) {
+        row.push(field);
+        rows.push(row);
+      }
 
-      if (!date && !subject && !studentsStr) continue;
+      if (rows.length <= 1) return [];
 
-      const students = studentsStr
-        ? studentsStr.split(/[,，]/).map((s) => s.trim()).filter(Boolean)
-        : [];
+      const dataRows = rows.slice(1);
+      const result = [];
 
-      result.push({
-        date: date || "",
-        dateLabel: date || "",
-        day: day || "",
-        time: time || "",
-        location: location || "",
-        students,
-        subject: subject || "",
-        homework: homework || "",
-        remark: remark || ""
-      });
-    }
-    return result;
-  }
+      for (const cols of dataRows) {
+        const [
+          date,
+          day,
+          time,
+          location,
+          studentsStr,
+          subject,
+          homework,
+          remark
+        ] = cols.map(v => (v || "").trim());
 
-  function loadSchedule() {
-    fetch(CSV_URL)
-      .then((res) => {
-        if (!res.ok) throw new Error("载入失败");
-        return res.text();
-      })
-      .then((text) => {
-        SCHEDULE = parseCSV(text);
-        scheduleLoaded = true;
-        scheduleError = false;
-      })
-      .catch((err) => {
-        console.error("载入时间表失败：", err);
-        scheduleLoaded = true;
-        scheduleError = true;
-      });
-  }
+        if (!date && !day && !time && !location && !studentsStr && !subject && !homework && !remark) continue;
 
-  loadSchedule();
+        const students = studentsStr
+          ? studentsStr.split(/[,，]/).map(s => s.trim()).filter(Boolean)
+          : [];
 
-  // ============================
-  // ✅ 关键：真正“人性化排序”的日期/时间解析
-  // ============================
+        result.push({
+          date: date || "",
+          dateLabel: date || "",
+          day: day || "",
+          time: time || "",
+          location: location || "",
+          students,
+          subject: subject || "",
+          homework: homework || "",
+          remark: remark || ""
+        });
+      }
 
-  function normalizeName(name) {
-    return (name || "").toLowerCase().replace(/\s+/g, "");
-  }
-
-  // 支持：2025-12-01 / 2025/12/1 / 1/12/2025 / 2025年12月1日
-  function parseDateValue(s) {
-    const str = (s || "").trim();
-    if (!str) return NaN;
-
-    // 1) ISO / yyyy-mm-dd / yyyy/mm/dd
-    let m = str.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
-    if (m) {
-      const y = Number(m[1]), mo = Number(m[2]), d = Number(m[3]);
-      return new Date(y, mo - 1, d).getTime();
+      return result;
     }
 
-    // 2) 中文：yyyy年m月d日
-    m = str.match(/^(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/);
-    if (m) {
-      const y = Number(m[1]), mo = Number(m[2]), d = Number(m[3]);
-      return new Date(y, mo - 1, d).getTime();
+    function parseDateValue(s) {
+      const str = (s || "").trim();
+      if (!str) return NaN;
+
+      let m = str.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
+      if (m) {
+        return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])).getTime();
+      }
+
+      m = str.match(/^(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/);
+      if (m) {
+        return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])).getTime();
+      }
+
+      m = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+      if (m) {
+        const a = Number(m[1]);
+        const b = Number(m[2]);
+        const y = Number(m[3]);
+        const d = a > 12 ? a : b;
+        const mo = a > 12 ? b : a;
+        return new Date(y, mo - 1, d).getTime();
+      }
+
+      const t = Date.parse(str);
+      return Number.isFinite(t) ? t : NaN;
     }
 
-    // 3) dd/mm/yyyy 或 mm/dd/yyyy（我们尽量判断：若第一个数字>12，当作dd/mm）
-    m = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
-    if (m) {
-      const a = Number(m[1]), b = Number(m[2]), y = Number(m[3]);
-      let d, mo;
-      if (a > 12) { d = a; mo = b; } else { mo = a; d = b; }
-      return new Date(y, mo - 1, d).getTime();
+    function parseTimeStart(s) {
+      const str = (s || "").toLowerCase().replace(/\s+/g, "");
+      const m = str.match(/(\d{1,2})(?::(\d{2}))?(a\.?m\.?|p\.?m\.?)?/);
+      if (!m) return 0;
+
+      let h = Number(m[1]);
+      const min = m[2] ? Number(m[2]) : 0;
+      const ap = m[3] || "";
+
+      if (ap.includes("p") && h < 12) h += 12;
+      if (ap.includes("a") && h === 12) h = 0;
+
+      return h * 60 + min;
     }
 
-    // 4) 最后兜底：让浏览器尝试解析（不保证）
-    const t = Date.parse(str);
-    return Number.isFinite(t) ? t : NaN;
-  }
+    function sortByDateThenTime(a, b) {
+      const da = parseDateValue(a.dateLabel || a.date);
+      const db = parseDateValue(b.dateLabel || b.date);
 
-  // 支持：7:00p.m.-9:00p.m. / 7:00pm - 9:00pm / 19:00-21:00
-  function parseTimeStart(s) {
-    const str = (s || "").toLowerCase().replace(/\s+/g, "");
+      if (Number.isFinite(da) && Number.isFinite(db) && da !== db) {
+        return da - db;
+      }
 
-    // 抓第一个时间
-    const m = str.match(/(\d{1,2})(?::(\d{2}))?(a\.?m\.?|p\.?m\.?)?/);
-    if (!m) return 0;
+      if (!Number.isFinite(da) || !Number.isFinite(db)) {
+        const fallback = (a.dateLabel || a.date).localeCompare(b.dateLabel || b.date, "zh-Hans");
+        if (fallback !== 0) return fallback;
+      }
 
-    let h = Number(m[1]);
-    let min = m[2] ? Number(m[2]) : 0;
-    const ap = m[3] || "";
+      const ta = parseTimeStart(a.time);
+      const tb = parseTimeStart(b.time);
+      if (ta !== tb) return ta - tb;
 
-    if (ap.includes("p")) {
-      if (h < 12) h += 12;
-    } else if (ap.includes("a")) {
-      if (h === 12) h = 0;
-    }
-    return h * 60 + min; // 分钟数，用来排序
-  }
-
-  function sortByDateThenTime(a, b) {
-    const da = parseDateValue(a.dateLabel || a.date);
-    const db = parseDateValue(b.dateLabel || b.date);
-    if (Number.isFinite(da) && Number.isFinite(db) && da !== db) return da - db;
-
-    // 如果日期解析失败，就退回文字排序（至少稳定）
-    if (!Number.isFinite(da) || !Number.isFinite(db)) {
-      const dText = (a.dateLabel || a.date).localeCompare(b.dateLabel || b.date);
-      if (dText !== 0) return dText;
+      return (a.subject || "").localeCompare(b.subject || "", "zh-Hans");
     }
 
-    // 同一天：按开始时间排序
-    const ta = parseTimeStart(a.time);
-    const tb = parseTimeStart(b.time);
-    if (ta !== tb) return ta - tb;
-
-    return (a.subject || "").localeCompare(b.subject || "");
-  }
-
-  // ============================
-  // 3. 登录与画面切换逻辑
-  // ============================
-
-  function handleLogin() {
-    const input = document.getElementById("accessCode");
-    const code = (input.value || "").trim();
-    const msg = document.getElementById("loginMessage");
-
-    if (!code) {
-      msg.textContent = "请输入 access code。";
-      msg.className = "message message-error";
-      return;
+    function getStudentAccountCount() {
+      return Object.values(ACCESS_CODES).filter(user => user.role === "student").length;
     }
 
-    const user = ACCESS_CODES[code];
-
-    if (!user) {
-      msg.textContent = "Access code 不正确，请确认后再输入。";
-      msg.className = "message message-error";
-      return;
+    // ============================
+    // 载入时间表
+    // ============================
+    function loadSchedule() {
+      fetch(CSV_URL)
+        .then(res => {
+          if (!res.ok) throw new Error("载入失败");
+          return res.text();
+        })
+        .then(text => {
+          SCHEDULE = parseCSV(text);
+          scheduleLoaded = true;
+          scheduleError = false;
+        })
+        .catch(err => {
+          console.error("载入时间表失败：", err);
+          scheduleLoaded = true;
+          scheduleError = true;
+        });
     }
 
-    if (!scheduleLoaded) {
-      msg.textContent = "系统正在载入最新时间表，请稍候几秒再尝试。";
-      msg.className = "message message-error";
-      return;
+    // ============================
+    // 登录 / 登出
+    // ============================
+    function clearAccessCode() {
+      const input = document.getElementById("accessCode");
+      const msg = document.getElementById("loginMessage");
+      input.value = "";
+      msg.textContent = "";
+      msg.className = "message";
+      input.focus();
     }
 
-    if (scheduleError) {
-      msg.textContent = "时间表载入失败，请稍后再试或联系老师检查 Google Sheet 设定。";
-      msg.className = "message message-error";
-      return;
+    function handleLogin() {
+      const input = document.getElementById("accessCode");
+      const code = (input.value || "").trim();
+      const msg = document.getElementById("loginMessage");
+      const user = ACCESS_CODES[code];
+
+      if (!code) {
+        msg.textContent = "请输入 access code。";
+        msg.className = "message message-error";
+        return;
+      }
+
+      if (!user) {
+        msg.textContent = "Access code 不正确，请确认后再输入。";
+        msg.className = "message message-error";
+        return;
+      }
+
+      if (!scheduleLoaded) {
+        msg.textContent = "系统正在载入最新时间表，请稍候几秒后再尝试。";
+        msg.className = "message message-error";
+        return;
+      }
+
+      if (scheduleError) {
+        msg.textContent = "时间表载入失败，请稍后再试或联系老师检查 Google Sheet 设定。";
+        msg.className = "message message-error";
+        return;
+      }
+
+      msg.textContent = "";
+      msg.className = "message";
+
+      document.getElementById("loginSection").classList.add("hidden");
+      document.getElementById("mainSection").classList.remove("hidden");
+      document.getElementById("heroSubtitle").classList.add("hidden");
+
+      const welcomeTitle = document.getElementById("welcomeTitle");
+      const welcomeSubtitle = document.getElementById("welcomeSubtitle");
+      const meetTopBtn = document.getElementById("meetTopBtn");
+
+      if (user.role === "admin") {
+        welcomeTitle.textContent = "欢迎使用老师管理系统";
+        welcomeSubtitle.textContent = "当前为 Admin 模式。你可以查看全部学生排课与所有 access code 记录。";
+        document.getElementById("studentView").classList.add("hidden");
+        document.getElementById("adminView").classList.remove("hidden");
+        meetTopBtn.classList.add("hidden");
+        renderAdminTable();
+        renderCodeTable();
+      } else {
+        welcomeTitle.textContent = `欢迎，${user.fullName}`;
+        welcomeSubtitle.textContent = "以下是专属你的补习时间、功课安排与课堂提醒。";
+        document.getElementById("studentView").classList.remove("hidden");
+        document.getElementById("adminView").classList.add("hidden");
+        meetTopBtn.classList.remove("hidden");
+        renderStudentView(user);
+      }
     }
 
-    msg.textContent = "";
-    msg.className = "message";
-
-    document.getElementById("loginSection").classList.add("hidden");
-    document.getElementById("mainSection").classList.remove("hidden");
-
-    const welcomeTitle = document.getElementById("welcomeTitle");
-    const welcomeSubtitle = document.getElementById("welcomeSubtitle");
-
-    if (user.role === "admin") {
-      welcomeTitle.textContent = "欢迎使用排课管理系统";
-      welcomeSubtitle.textContent = "目前是老师管理模式，以下为全部学生的补习安排总览。";
+    function handleLogout() {
+      document.getElementById("mainSection").classList.add("hidden");
+      document.getElementById("loginSection").classList.remove("hidden");
+      document.getElementById("heroSubtitle").classList.remove("hidden");
       document.getElementById("studentView").classList.add("hidden");
-      document.getElementById("adminView").classList.remove("hidden");
-      renderAdminTable();
-    } else {
-      welcomeTitle.textContent = `欢迎，${user.fullName}`;
-      welcomeSubtitle.textContent = "以下是专属你的补习时间与科目安排。";
-      document.getElementById("studentView").classList.remove("hidden");
       document.getElementById("adminView").classList.add("hidden");
-      renderStudentView(user);
+      document.getElementById("meetTopBtn").classList.add("hidden");
+      document.getElementById("accessCode").value = "";
+      document.getElementById("loginMessage").textContent = "";
+      document.getElementById("loginMessage").className = "message";
+      clearAdminSearch();
     }
-  }
 
-  function handleLogout() {
-    document.getElementById("mainSection").classList.add("hidden");
-    document.getElementById("loginSection").classList.remove("hidden");
-    document.getElementById("accessCode").value = "";
-    document.getElementById("loginMessage").textContent = "";
-    const search = document.getElementById("adminSearch");
-    if (search) search.value = "";
-  }
+    // ============================
+    // 学生端渲染
+    // ============================
+    function renderStudentView(user) {
+      const tbody = document.querySelector("#studentTable tbody");
+      const noData = document.getElementById("studentNoData");
+      tbody.innerHTML = "";
 
-  document.getElementById("accessCode")
-    .addEventListener("keyup", function (event) {
-      if (event.key === "Enter") handleLogin();
-    });
+      const isGroup = Array.isArray(user.groupShortNames) && user.groupShortNames.length > 0;
+      const displayName = isGroup ? user.groupShortNames.join("、") : user.fullName;
+      document.getElementById("studentFullName").textContent = displayName;
 
-  // ============================
-  // 4. 学生 / 家庭 / Admin 画面渲染（✅排序已更新）
-  // ============================
+      const matchKeys = isGroup
+        ? user.groupShortNames.map(n => normalizeName(n))
+        : [normalizeName(user.shortName)];
 
-  function renderStudentView(user) {
-    const tbody = document.querySelector("#studentTable tbody");
-    tbody.innerHTML = "";
-    const noData = document.getElementById("studentNoData");
+      const rows = SCHEDULE
+        .filter(item => item.students.some(s => matchKeys.includes(normalizeName(s))))
+        .sort(sortByDateThenTime);
 
-    const isGroup = Array.isArray(user.groupShortNames) && user.groupShortNames.length > 0;
-    const displayName = isGroup ? user.groupShortNames.join("、") : user.fullName;
+      if (!rows.length) {
+        noData.classList.remove("hidden");
+        noData.textContent = "目前还没有找到属于该学生的补习安排，请稍后再查看或直接联系老师。";
+        return;
+      }
 
-    document.getElementById("studentNameInTip").textContent = displayName;
-    document.getElementById("studentFullName").textContent = displayName;
-
-    if (!SCHEDULE.length) {
-      noData.classList.remove("hidden");
-      noData.textContent = "目前时间表尚未设定，请稍后再查看或联络老师。";
-      return;
-    } else {
       noData.classList.add("hidden");
-    }
 
-    const matchKeys = isGroup
-      ? user.groupShortNames.map((n) => normalizeName(n))
-      : [normalizeName(user.shortName)];
-
-    const rows = SCHEDULE.filter((item) =>
-      item.students.some((s) => matchKeys.includes(normalizeName(s)))
-    );
-
-    if (!rows.length) {
-      noData.classList.remove("hidden");
-      noData.textContent = "目前还没有找到属于该学生的补习安排，请稍后再查看或联络老师。";
-      return;
-    } else {
-      noData.classList.add("hidden");
-    }
-
-    rows
-      .sort(sortByDateThenTime)   // ✅ 这里换成真正日期排序
-      .forEach((item) => {
+      rows.forEach(item => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${item.dateLabel}</td>
-          <td>${item.day}</td>
-          <td>${item.time}</td>
-          <td>${item.location}</td>
-          <td><span class="tag tag-subject">${item.subject}</span></td>
-          <td>${item.homework || "<span style='color:#9ca3af;'>（暂无资料）</span>"}</td>
-          <td>${item.remark || ""}</td>
+          <td>${escapeHtml(item.dateLabel)}</td>
+          <td>${escapeHtml(item.day)}</td>
+          <td>${escapeHtml(item.time)}</td>
+          <td>${escapeHtml(item.location)}</td>
+          <td><span class="tag tag-subject">${escapeHtml(item.subject || "未注明")}</span></td>
+          <td>${item.homework ? escapeHtml(item.homework) : '<span class="muted">（暂无资料）</span>'}</td>
+          <td>${item.remark ? escapeHtml(item.remark) : '<span class="muted">—</span>'}</td>
         `;
         tbody.appendChild(tr);
       });
-  }
-
-  function renderAdminTable() {
-    const tbody = document.querySelector("#adminTable tbody");
-    tbody.innerHTML = "";
-
-    const noData = document.getElementById("adminNoData");
-
-    if (!SCHEDULE.length) {
-      noData.classList.remove("hidden");
-      noData.textContent = "目前时间表尚未设定，请稍后再试或检查 Google Sheet。";
-      return;
-    } else {
-      noData.classList.add("hidden");
     }
 
-    const rows = [...SCHEDULE].sort(sortByDateThenTime); // ✅ Admin也统一排序
+    // ============================
+    // Admin 端渲染
+    // ============================
+    function renderAdminTable() {
+      const tbody = document.querySelector("#adminTable tbody");
+      const noData = document.getElementById("adminNoData");
+      tbody.innerHTML = "";
 
-    rows.forEach((item) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${item.dateLabel}</td>
-        <td>${item.day}</td>
-        <td>${item.time}</td>
-        <td>${item.location}</td>
-        <td>${item.students.join("、")}</td>
-        <td><span class="tag tag-subject">${item.subject}</span></td>
-        <td>${item.homework || "<span style='color:#9ca3af;'>（暂无）</span>"}</td>
-        <td>${item.remark || ""}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
+      document.getElementById("studentCodeCount").textContent = String(getStudentAccountCount());
+      document.getElementById("scheduleCount").textContent = String(SCHEDULE.length);
 
-  function filterAdminTable() {
-    const searchInput = document.getElementById("adminSearch");
-    if (!searchInput) return;
-    const keyword = (searchInput.value || "").toLowerCase().trim();
-    const tbody = document.querySelector("#adminTable tbody");
-    const rows = tbody.querySelectorAll("tr");
-    let visibleCount = 0;
-
-    rows.forEach((tr) => {
-      const text = tr.textContent.toLowerCase();
-      if (!keyword || text.includes(keyword)) {
-        tr.style.display = "";
-        visibleCount++;
-      } else {
-        tr.style.display = "none";
+      if (!SCHEDULE.length) {
+        noData.classList.remove("hidden");
+        return;
       }
+
+      noData.classList.add("hidden");
+
+      [...SCHEDULE].sort(sortByDateThenTime).forEach(item => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(item.dateLabel)}</td>
+          <td>${escapeHtml(item.day)}</td>
+          <td>${escapeHtml(item.time)}</td>
+          <td>${escapeHtml(item.location)}</td>
+          <td>${escapeHtml(item.students.join("、")) || '<span class="muted">（未注明）</span>'}</td>
+          <td><span class="tag tag-subject">${escapeHtml(item.subject || "未注明")}</span></td>
+          <td>${item.homework ? escapeHtml(item.homework) : '<span class="muted">（暂无）</span>'}</td>
+          <td>${item.remark ? escapeHtml(item.remark) : '<span class="muted">—</span>'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderCodeTable() {
+      const tbody = document.querySelector("#codeTable tbody");
+      tbody.innerHTML = "";
+
+      Object.values(ACCESS_CODES).forEach(user => {
+        let roleTag = '<span class="tag tag-student">学生</span>';
+
+        if (user.role === "admin") {
+          roleTag = '<span class="tag tag-admin">Admin</span>';
+        } else if (user.groupShortNames) {
+          roleTag = '<span class="tag tag-family">家庭共用</span>';
+        }
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(user.fullName)}</td>
+          <td>${escapeHtml(user.shortName || "-")}</td>
+          <td><strong>${escapeHtml(user.code || "-")}</strong></td>
+          <td>${roleTag}</td>
+          <td>${escapeHtml(user.remark || "-")}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterAdminTable() {
+      const keyword = (document.getElementById("adminSearch").value || "").toLowerCase().trim();
+      const rows = document.querySelectorAll("#adminTable tbody tr");
+      const noData = document.getElementById("adminNoData");
+      let visibleCount = 0;
+
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        const matched = !keyword || text.includes(keyword);
+        row.style.display = matched ? "" : "none";
+        if (matched) visibleCount++;
+      });
+
+      if (!visibleCount) {
+        noData.classList.remove("hidden");
+        noData.textContent = "没有符合搜索条件的排课记录，请尝试其他关键字。";
+      } else {
+        noData.classList.add("hidden");
+      }
+    }
+
+    function clearAdminSearch() {
+      const input = document.getElementById("adminSearch");
+      if (!input) return;
+      input.value = "";
+      filterAdminTable();
+    }
+
+    // ============================
+    // 事件绑定
+    // ============================
+    document.getElementById("accessCode").addEventListener("keyup", function (event) {
+      if (event.key === "Enter") handleLogin();
     });
 
-    const noData = document.getElementById("adminNoData");
-    if (visibleCount === 0) {
-      noData.classList.remove("hidden");
-      noData.textContent = "没有符合搜索条件的记录，请尝试其他关键字。";
-    } else {
-      noData.classList.add("hidden");
-    }
-  }
-</script>
+    // 初始载入
+    loadSchedule();
+  </script>
 </body>
 </html>
-
-

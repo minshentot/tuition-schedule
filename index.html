@@ -424,6 +424,62 @@
       margin-bottom: 6px;
     }
 
+    .paid-subject-card {
+      background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+      border: 1px solid #dbeafe;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+    }
+
+    .paid-subject-card h3 {
+      font-size: 0.98rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .revision-notice {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #7c2d12;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 0.84rem;
+      line-height: 1.75;
+      margin-bottom: 12px;
+    }
+
+    .paid-subject-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .paid-subject-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      font-size: 0.86rem;
+      line-height: 1.6;
+    }
+
+    .paid-subject-name {
+      font-weight: 800;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .paid-subject-value {
+      color: var(--text);
+      text-align: right;
+    }
+
     .link-card p {
       font-size: 0.82rem;
       color: var(--muted);
@@ -850,6 +906,14 @@
               </div>
             </div>
 
+            <div class="paid-subject-card">
+              <h3>📚 收费补习科目与复习通知</h3>
+              <div class="revision-notice">
+                6月起，除了收费补习科目，其他想要老师帮忙复习的科目，若没有在考试两个星期前通知，将自动视为不想老师帮忙复习，学生需自行复习。
+              </div>
+              <div class="paid-subject-list" id="paidSubjectList"></div>
+            </div>
+
             <div class="info-line">
               当前查看对象：<span id="studentFullName"></span>
             </div>
@@ -1039,6 +1103,20 @@
         code: "JJLV2026",
         remark: "家庭共用账号"
       }
+    };
+
+    const PAID_SUBJECTS = {
+      "Joey": "数学",
+      "Joell": "数学",
+      "Vanessa": "英文、历史、国语、华语、科学",
+      "Emily": "华语、科学",
+      "Lucas": "历史、华语、科学、地理",
+      "Wendy": "历史、地理、科学、华语、国语、英语、数学",
+      "Jayden": "历史、地理、科学、华语、国语、英语、数学",
+      "Ashley": "无",
+      "Yi Xuan": "无",
+      "Yu Chen": "数学、科学",
+      "Yan Han": "无"
     };
 
     let SCHEDULE = [];
@@ -1284,6 +1362,25 @@
       clearAdminSearch();
     }
 
+    function renderPaidSubjects(user) {
+      const box = document.getElementById("paidSubjectList");
+      if (!box) return;
+
+      const names = Array.isArray(user.groupShortNames) && user.groupShortNames.length > 0
+        ? user.groupShortNames
+        : [user.shortName];
+
+      box.innerHTML = names.map(name => {
+        const subjects = PAID_SUBJECTS[name] || "暂未设定";
+        return `
+          <div class="paid-subject-row">
+            <div class="paid-subject-name">${escapeHtml(name)}</div>
+            <div class="paid-subject-value">${escapeHtml(subjects)}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
     function renderStudentView(user) {
       const tbody = document.querySelector("#studentTable tbody");
       const noData = document.getElementById("studentNoData");
@@ -1292,6 +1389,7 @@
       const isGroup = Array.isArray(user.groupShortNames) && user.groupShortNames.length > 0;
       const displayName = isGroup ? user.groupShortNames.join("、") : user.fullName;
       document.getElementById("studentFullName").textContent = displayName;
+      renderPaidSubjects(user);
 
       const matchKeys = isGroup
         ? user.groupShortNames.map(n => normalizeName(n))

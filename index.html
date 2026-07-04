@@ -1210,24 +1210,14 @@ ASK 及法语课程将不安排系统性复习，改为老师视时间提供学�
   <script>
     const CSV_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vQY9srKI-EAsARYyhifRknDi3qcDdV-wY7AfQdG6Clx12Dtmp2A0ffCpAizDEZU_Kz6_A7ugfLIRuoY/pub?output=csv";
+
+    // Google Sheet 自动读取设定
+    // 使用 gid 固定读取，避免 Google Sheet 不认工作表名称而无法载入。
     const OUTSTANDING_CSV_URL =
       "https://docs.google.com/spreadsheets/d/1Q5YXxuxp7POOvikbVKh3IkYP8Sh3XsOEqfUXJqeHGFQ/export?format=csv&gid=675823105";
+
     const SETTINGS_CSV_URL =
       "https://docs.google.com/spreadsheets/d/1Q5YXxuxp7POOvikbVKh3IkYP8Sh3XsOEqfUXJqeHGFQ/export?format=csv&gid=644564742";
-    // Google Sheet 自动读取设定
-    // 目前会读取三个工作表：
-    // 1. 默认课程表：CSV_URL
-    // 2. OutstandingHours：欠课时数
-    // 3. Settings：截止日期与系统更新时间
-    // 注意：Google Sheet 需要发布到网络，且工作表名称必须保持一致。
-    const SHEET_PUB_BASE = CSV_URL.split("/pub?")[0];
-
-    function makeSheetCsvUrl(sheetName) {
-      return `${SHEET_PUB_BASE}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
-    }
-
-    const OUTSTANDING_CSV_URL = makeSheetCsvUrl("OutstandingHours");
-    const SETTINGS_CSV_URL = makeSheetCsvUrl("Settings");
 
     const ACCESS_CODES = {
       "totadmin2026": {

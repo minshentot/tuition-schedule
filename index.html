@@ -941,7 +941,7 @@
                   <strong>课堂提醒：</strong>欢迎来到 <strong>启缘教育 · Teacher Ooi Tuition 学习管理系统</strong>。请家长与学生留意以下安排与说明。
 
                   <div class="rules-list">
-                    <div class="rule-item"><span class="rule-no">1</span><div>本系统会在每天约 <strong>上午10:00</strong> 及 <strong>晚上11:00</strong> 更新，请家长与学生养成每日查看系统的习惯。</div></div>
+                    <div class="rule-item"><span class="rule-no">1</span><div>本系统会在 <strong id="websiteUpdateText">每天上午10:00及晚上11:00更新</strong>，请家长与学生养成每日查看系统的习惯。</div></div>
                     <div class="rule-item"><span class="rule-no">2</span><div>请于上课前至少 <strong>5分钟</strong> 做好准备，以便课程准时开始。</div></div>
                     <div class="rule-item"><span class="rule-no">3</span><div>网课期间请准时上线，不要无故缺席；若学生长时间没有出现，老师不会一直等待，并会直接通知家长。</div></div>
                     <div class="rule-item"><span class="rule-no">4</span><div>若老师点名学生回答，学生 <strong>30秒内</strong> 没有回复，老师将继续上课，以确保课堂进度。</div></div>
@@ -1211,11 +1211,20 @@ ASK 及法语课程将不安排系统性复习，改为老师视时间提供学�
     const CSV_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vQY9srKI-EAsARYyhifRknDi3qcDdV-wY7AfQdG6Clx12Dtmp2A0ffCpAizDEZU_Kz6_A7ugfLIRuoY/pub?output=csv";
 
-    // 若要让欠课时数完全从 Google Sheet 更新：
-    // 1. 建立一个工作表，表头为 Student, Subject, Hours, CutoffDate
-    // 2. File → Share → Publish to web → 选择该工作表 → CSV
-    // 3. 把发布出来的 CSV 链接贴到下面引号内
-    const OUTSTANDING_CSV_URL = "";
+    // Google Sheet 自动读取设定
+    // 目前会读取三个工作表：
+    // 1. 默认课程表：CSV_URL
+    // 2. OutstandingHours：欠课时数
+    // 3. Settings：截止日期与系统更新时间
+    // 注意：Google Sheet 需要发布到网络，且工作表名称必须保持一致。
+    const SHEET_PUB_BASE = CSV_URL.split("/pub?")[0];
+
+    function makeSheetCsvUrl(sheetName) {
+      return `${SHEET_PUB_BASE}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+    }
+
+    const OUTSTANDING_CSV_URL = makeSheetCsvUrl("OutstandingHours");
+    const SETTINGS_CSV_URL = makeSheetCsvUrl("Settings");
 
     const ACCESS_CODES = {
       "totadmin2026": {
@@ -1273,6 +1282,8 @@ ASK 及法语课程将不安排系统性复习，改为老师视时间提供学�
     };
 
     let OUTSTANDING_CUTOFF_DATE = "2026年7月8日";
+
+    let WEBSITE_UPDATE_TEXT = "每天上午10:00及晚上11:00更新";
 
     let OUTSTANDING_HOURS = [
       { student: "Vanessa", subject: "F2 华语", hours: "6h" },
@@ -1403,6 +1414,44 @@ ASK 及法语课程将不安排系统性复习，改为老师视时间提供学�
       return result;
     }
 
+
+    function formatDateForDisplay(value) {
+      const str = (value || "").trim();
+      if (!str) return "";
+
+      const m = str.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/);
+      if (m) return `${Number(m[1])}年${Number(m[2])}月${Number(m[3])}日`;
+
+      return str;
+    }
+
+    function parseSettingsCSV(text) {
+      const rows = parseCSVGeneric(text);
+      if (rows.length <= 1) return;
+
+      rows.slice(1).forEach(cols => {
+        const name = normalizeName(cols[0] || "");
+        const value = (cols[1] || "").trim();
+        if (!name || !value) return;
+
+        if (name === "outstandingdate" || name === "cutoffdate" || name === "截止日期" || name === "截止至") {
+          OUTSTANDING_CUTOFF_DATE = formatDateForDisplay(value);
+        }
+
+        if (name === "websiteupdate" || name === "updatetime" || name === "系统更新时间" || name === "网页更新时间") {
+          WEBSITE_UPDATE_TEXT = value;
+        }
+      });
+    }
+
+    function applySettingsToPage() {
+      const cutoff = document.getElementById("outstandingCutoffDate");
+      const updateText = document.getElementById("websiteUpdateText");
+
+      if (cutoff) cutoff.textContent = OUTSTANDING_CUTOFF_DATE;
+      if (updateText) updateText.textContent = WEBSITE_UPDATE_TEXT;
+    }
+
     function parseCSVGeneric(text) {
       const rows = [];
       let row = [];
@@ -1520,6 +1569,23 @@ ASK 及法语课程将不安排系统性复习，改为老师视时间提供学�
         });
     }
 
+
+    function loadSettings() {
+      fetch(SETTINGS_CSV_URL)
+        .then(res => {
+          if (!res.ok) throw new Error("设置载入失败");
+          return res.text();
+        })
+        .then(text => {
+          parseSettingsCSV(text);
+          applySettingsToPage();
+          if (CURRENT_USER) renderOutstandingHours(CURRENT_USER);
+        })
+        .catch(err => {
+          console.error("载入 Settings 失败：", err);
+          applySettingsToPage();
+        });
+    }
 
     function loadOutstandingHours() {
       if (!OUTSTANDING_CSV_URL) return;
@@ -1829,6 +1895,7 @@ ASK 及法语课程将不安排系统性复习，改为老师视时间提供学�
     });
 
     loadSchedule();
+    loadSettings();
     loadOutstandingHours();
   </script>
 </body>

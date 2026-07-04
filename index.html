@@ -710,6 +710,88 @@
       flex-wrap: wrap;
     }
 
+
+
+    .announcement-card {
+      background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+      border: 1px solid #fed7aa;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+      margin-bottom: 16px;
+    }
+
+    .announcement-card h3,
+    .outstanding-card h3 {
+      font-size: 0.98rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .announcement-card details {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: #fed7aa;
+    }
+
+    .announcement-content {
+      color: #475569;
+      font-size: 0.86rem;
+      line-height: 1.85;
+      white-space: pre-line;
+    }
+
+    .announcement-content h4 {
+      margin: 14px 0 6px;
+      color: #9a3412;
+      font-size: 0.92rem;
+    }
+
+    .outstanding-card {
+      background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+      border: 1px solid #dbeafe;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+    }
+
+    .outstanding-date {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .outstanding-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .outstanding-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      font-size: 0.86rem;
+      line-height: 1.6;
+    }
+
+    .outstanding-subject {
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .outstanding-hours {
+      font-weight: 900;
+      color: var(--danger);
+      white-space: nowrap;
+    }
+
     @media (max-width: 980px) {
       .dashboard-grid,
       .admin-layout {
@@ -859,30 +941,17 @@
                   <strong>课堂提醒：</strong>欢迎来到 <strong>启缘教育 · Teacher Ooi Tuition 学习管理系统</strong>。请家长与学生留意以下安排与说明。
 
                   <div class="rules-list">
-                    <div class="rule-item">
-                      <span class="rule-no">1</span>
-                      <div>请于上课前至少 <strong>5分钟</strong> 做好准备，以便课程准时开始。</div>
-                    </div>
-                    <div class="rule-item">
-                      <span class="rule-no">2</span>
-                      <div>如需请假、缺课或临时无法出席，请 <strong>尽早通知老师</strong>，方便安排补课。</div>
-                    </div>
-                    <div class="rule-item">
-                      <span class="rule-no">3</span>
-                      <div>上课期间请专心听讲，<strong>禁止聊天或玩手机</strong>；手机仅限课堂学习用途。</div>
-                    </div>
-                    <div class="rule-item">
-                      <span class="rule-no">4</span>
-                      <div>请保持良好纪律，避免打扰其他同学学习。</div>
-                    </div>
-                    <div class="rule-item">
-                      <span class="rule-no">5</span>
-                      <div>若晚上课程时间为 <strong>7:00 PM</strong>，建议尽早到达；个别情况下老师可能稍迟，请耐心等候。</div>
-                    </div>
-                    <div class="rule-item">
-                      <span class="rule-no">6</span>
-                      <div>建议家长 / 学生 <strong>每天至少查看一次</strong> 本系统，以获取最新课程与功课安排。</div>
-                    </div>
+                    <div class="rule-item"><span class="rule-no">1</span><div>本系统会在每天约 <strong>上午10:00</strong> 及 <strong>晚上11:00</strong> 更新，请家长与学生养成每日查看系统的习惯。</div></div>
+                    <div class="rule-item"><span class="rule-no">2</span><div>请于上课前至少 <strong>5分钟</strong> 做好准备，以便课程准时开始。</div></div>
+                    <div class="rule-item"><span class="rule-no">3</span><div>网课期间请准时上线，不要无故缺席；若学生长时间没有出现，老师不会一直等待，并会直接通知家长。</div></div>
+                    <div class="rule-item"><span class="rule-no">4</span><div>若老师点名学生回答，学生 <strong>30秒内</strong> 没有回复，老师将继续上课，以确保课堂进度。</div></div>
+                    <div class="rule-item"><span class="rule-no">5</span><div>上厕所需要先通知老师，不可自行离开课堂。</div></div>
+                    <div class="rule-item"><span class="rule-no">6</span><div>所有课堂任务、作业及复习安排都会照常进行；如未完成，老师会直接通知家长。</div></div>
+                    <div class="rule-item"><span class="rule-no">7</span><div>上课期间禁止聊天或玩手机；手机仅限课堂学习用途。</div></div>
+                    <div class="rule-item"><span class="rule-no">8</span><div>若发现学生使用手机处理与课堂无关的事情：第一次警告，第二次手机将暂时由老师保管。</div></div>
+                    <div class="rule-item"><span class="rule-no">9</span><div>若班上普遍出现玩手机或聊天情况，老师将于上课前统一保管手机。</div></div>
+                    <div class="rule-item"><span class="rule-no">10</span><div>若有重要信息需要回复，请先通知老师，经允许后才可处理。</div></div>
+                    <div class="rule-item"><span class="rule-no">11</span><div>若家长或学生认为目前上课模式无法配合，请尽早与老师联系讨论；若最终决定不继续上课，可申请退款。</div></div>
                   </div>
                 </div>
               </div>
@@ -903,7 +972,77 @@
                   <h3>📣 温馨提醒</h3>
                   <p>若老师有临时调整时间、补课、换科目或备注更新，会优先显示在本系统，请记得每日查看。</p>
                 </div>
+
+                <div class="link-card">
+                  <h3>📱 WhatsApp 询问功课</h3>
+                  <p>不会的题目可随时 WhatsApp 老师。老师会在有空时尽量回复；若课堂中有重要信息需要回复，也必须先通知老师。</p>
+                </div>
               </div>
+            </div>
+
+
+            <div class="announcement-card">
+              <h3>📢 课程调整通知（重要）</h3>
+              <details>
+                <summary>点击展开完整说明</summary>
+                <div class="announcement-content">
+<h4>亲爱的家长、同学们：</h4>
+由于老师身体抱恙，为了兼顾教学品质及身体恢复，课程安排将进行部分调整，希望大家能够理解与配合。
+
+目前老师罹患疑似咳嗽变异性哮喘，医生建议避免长时间说话、冷空气刺激及过度劳累，因此需要增加休息时间，以免病情反复。
+
+虽然身体状况不稳定，但老师仍希望尽可能不影响大家的学习进度，因此目前不会全面停课，而是视当天身体状况，采用实体课与网课交替的方式继续教学。如因天气、空气或身体状况突然恶化，实体课可能临时改为网课或取消，届时会尽快通知家长及学生。
+
+目前医生建议老师尽量减少说话，因此部分课程将改为文字教学，配合图片、WhatsApp、线上文字转语音及其他辅助工具进行授课，希望尽量维持正常的学习进度。当然，老师会视身体情况开口解释。
+
+除了华语补习之外，其余课程预计将在今年大考后结束。之后老师会把更多时间投入教材制作及课程规划。欢迎学生及家长随时通过 WhatsApp 询问课业问题，只要老师有空，都会尽量协助大家解答。
+
+<h4>考前复习安排</h4>
+考试前夕，所有原定课程一律照常进行。为了帮隔天考试的学生复习，而取消其他学生课程的安排，将不再实行。未安排补习的科目，老师将不再另外安排考前复习。
+
+若学生希望自行留在家中准备考试，可提前向老师请假，但该课程将不另行补课。
+
+<h4>华小课程调整</h4>
+六年级音乐课取消，改由 WhatsApp 安排学习任务。
+
+Yu Chen、Yee Zhong：保留星期日早上的实体课，为每两星期一次。若老师当天身体不适，则课程取消。
+
+Joey、Joell、Ashley：保留星期一及星期六数学课，课程将依身体状况安排实体课或网课，请留意系统通知。华语、历史、科学等辅导课程暂时不安排实体授课，改为根据 Lesson Plan 在家完成学习任务。所有任务仍需按时完成，如未完成，老师将直接通知家长。Ashley 星期六不参加补习。
+
+Yi Xuan、Yan Han：辅导班继续保留，但暂时不进行一般授课，课程会依情况安排实体课或网课，请留意系统通知。不会的题目可随时 WhatsApp 老师，老师会于有空时尽量回复。老师也会安排背诵、听写等较适合自行完成的学习任务。
+
+若课堂期间持续使用手机处理与课程无关的事情，手机将暂时由老师保管。
+
+<h4>独中课程调整</h4>
+语文课程将不再区分作文课及理解课，两者合并为一堂课。每次课程调整为 1小时30分钟，按情况增加至2小时至3小时，请参考系统：45分钟作文，45分钟阅读理解。
+
+因配合不到实体课时间，独中英文课程只提供网课。
+
+<h4>国中课程调整</h4>
+ASK 及法语课程将不安排系统性复习，改为老师视时间提供学习任务。此部分属于老师额外提供的协助，并非固定课程内容。
+
+语文课程将不再区分作文课及理解课，两者合并为一堂课。每次课程调整为 1小时30分钟，按情况增加至2小时至3小时，请参考系统：45分钟作文，45分钟阅读理解。
+
+<h4>招生调整</h4>
+从即日起至十月大考结束前，除非老师身体状况恢复稳定，否则将暂停招收新学生。若新生通过 Placement Test，并确认已具备一定基础，则会视情况考虑录取，以免影响现有学生的学习品质。
+
+<h4>补课规定</h4>
+所有课程安排都会提前更新至系统，或直接通知家长及学生。若课程已于 7天前公布，学生因个人原因请假、迟到或提早离开，除非属于老师请假，否则一律不安排补课，并依原订课时计算。
+
+<h4>最后说明</h4>
+老师知道这次调整可能会为部分家长及学生带来不便，也十分感谢大家一直以来的理解与支持。这些调整并非老师所乐见，而是在身体状况及教学品质之间，经过认真考虑后所作出的决定。
+
+老师仍会尽最大的努力照顾每位学生的学习，也希望大家能够给予理解与配合。若家长或学生认为目前的安排无法接受，欢迎私下与老师联系，老师会协助办理退款，并尊重每一位家长及学生的决定。
+
+再次感谢大家一直以来的支持与体谅。
+                </div>
+              </details>
+            </div>
+
+            <div class="outstanding-card">
+              <h3>⏱️ 欠课时数</h3>
+              <div class="outstanding-date">截止至：<strong id="outstandingCutoffDate">2026年7月8日</strong></div>
+              <div class="outstanding-list" id="outstandingHoursList"></div>
             </div>
 
             <div class="paid-subject-card">
@@ -1072,6 +1211,12 @@
     const CSV_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vQY9srKI-EAsARYyhifRknDi3qcDdV-wY7AfQdG6Clx12Dtmp2A0ffCpAizDEZU_Kz6_A7ugfLIRuoY/pub?output=csv";
 
+    // 若要让欠课时数完全从 Google Sheet 更新：
+    // 1. 建立一个工作表，表头为 Student, Subject, Hours, CutoffDate
+    // 2. File → Share → Publish to web → 选择该工作表 → CSV
+    // 3. 把发布出来的 CSV 链接贴到下面引号内
+    const OUTSTANDING_CSV_URL = "";
+
     const ACCESS_CODES = {
       "totadmin2026": {
         role: "admin",
@@ -1096,6 +1241,8 @@
       "ATYX0320": { role: "student", fullName: "Ashley Teh Yin Xuan", shortName: "Ashley", code: "ATYX0320", remark: "学生账号" },
       "TYZ1234": { role: "student", fullName: "Tan Yee Zhong", shortName: "Yee Zhong", code: "TYZ1234", remark: "学生账号" },
       "TZT1234": { role: "student", fullName: "Tan Zhi Thong", shortName: "Zhi Thong", code: "TZT1234", remark: "学生账号" },
+      "CSJ0717": { role: "student", fullName: "Chan Sin Jie", shortName: "Sin Jie", code: "CSJ0717", remark: "学生账号" },
+      "SLRQ0404": { role: "student", fullName: "Stephanie Lee Rou Qian", shortName: "Rou Qian", code: "SLRQ0404", remark: "学生账号" },
       
       "JJLV2026": {
         role: "student",
@@ -1120,12 +1267,34 @@
       "Yu Chen": "数学、科学",
       "Yan Han": "无",
       "Zhi Thong": "华语",
-      "Yee Zhong": "科学、数学"
+      "Yee Zhong": "科学、数学",
+      "Sin Jie": "英语、国语、数学、科学、历史",
+      "Rou Qian": "英语、国语、数学、科学、历史、地理、华语"
     };
+
+    let OUTSTANDING_CUTOFF_DATE = "2026年7月8日";
+
+    let OUTSTANDING_HOURS = [
+      { student: "Vanessa", subject: "F2 华语", hours: "6h" },
+      { student: "Vanessa", subject: "F2 科学", hours: "12.5h" },
+      { student: "Vanessa", subject: "F2 国语", hours: "12h" },
+      { student: "Vanessa", subject: "F2 英文", hours: "7.5h" },
+      { student: "Zhi Thong", subject: "F2 华语", hours: "3h" },
+      { student: "Lucas", subject: "F2 华语", hours: "6h" },
+      { student: "Lucas", subject: "F2 科学", hours: "12.5h" },
+      { student: "Lucas", subject: "F2 地理", hours: "13.5h" },
+      { student: "Lucas", subject: "F2 历史", hours: "7.5h" },
+      { student: "Emily", subject: "F2 华语", hours: "6h" },
+      { student: "Emily", subject: "F2 科学", hours: "12.5h" },
+      { student: "Aiwin", subject: "F2 科学", hours: "4.5h" },
+      { student: "Aiwin", subject: "F2 地理", hours: "4.5h" },
+      { student: "Aiwin", subject: "F2 历史", hours: "3h" }
+    ];
 
     let SCHEDULE = [];
     let scheduleLoaded = false;
     let scheduleError = false;
+    let CURRENT_USER = null;
 
     function normalizeName(name) {
       return (name || "").toLowerCase().replace(/\s+/g, "");
@@ -1207,6 +1376,72 @@
       return result;
     }
 
+
+    function parseOutstandingCSV(text) {
+      const rows = parseCSVGeneric(text);
+      if (rows.length <= 1) return [];
+
+      const headers = rows[0].map(h => normalizeName(h));
+      const studentIndex = headers.findIndex(h => h === "student" || h === "students" || h === "姓名" || h === "学生");
+      const subjectIndex = headers.findIndex(h => h === "subject" || h === "科目");
+      const hoursIndex = headers.findIndex(h => h === "hours" || h === "hour" || h === "欠课时数" || h === "时数");
+      const cutoffIndex = headers.findIndex(h => h === "cutoffdate" || h === "截止日期" || h === "截止至");
+
+      const result = [];
+      rows.slice(1).forEach(cols => {
+        const student = (cols[studentIndex] || "").trim();
+        const subject = (cols[subjectIndex] || "").trim();
+        let hours = (cols[hoursIndex] || "").trim();
+        const cutoff = cutoffIndex >= 0 ? (cols[cutoffIndex] || "").trim() : "";
+
+        if (cutoff) OUTSTANDING_CUTOFF_DATE = cutoff;
+        if (!student && !subject && !hours) return;
+        if (hours && !/h$/i.test(hours)) hours = `${hours}h`;
+        result.push({ student, subject, hours });
+      });
+
+      return result;
+    }
+
+    function parseCSVGeneric(text) {
+      const rows = [];
+      let row = [];
+      let field = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const next = text[i + 1];
+
+        if (char === '"') {
+          if (inQuotes && next === '"') {
+            field += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === "," && !inQuotes) {
+          row.push(field);
+          field = "";
+        } else if ((char === "\n" || char === "\r") && !inQuotes) {
+          if (char === "\r" && next === "\n") i++;
+          row.push(field);
+          rows.push(row);
+          row = [];
+          field = "";
+        } else {
+          field += char;
+        }
+      }
+
+      if (field.length || row.length) {
+        row.push(field);
+        rows.push(row);
+      }
+
+      return rows;
+    }
+
     function parseDateValue(s) {
       const str = (s || "").trim();
       if (!str) return NaN;
@@ -1285,6 +1520,25 @@
         });
     }
 
+
+    function loadOutstandingHours() {
+      if (!OUTSTANDING_CSV_URL) return;
+
+      fetch(OUTSTANDING_CSV_URL)
+        .then(res => {
+          if (!res.ok) throw new Error("欠课时数载入失败");
+          return res.text();
+        })
+        .then(text => {
+          const rows = parseOutstandingCSV(text);
+          if (rows.length) OUTSTANDING_HOURS = rows;
+          if (CURRENT_USER) renderOutstandingHours(CURRENT_USER);
+        })
+        .catch(err => {
+          console.error("载入欠课时数失败：", err);
+        });
+    }
+
     function clearAccessCode() {
       const input = document.getElementById("accessCode");
       const msg = document.getElementById("loginMessage");
@@ -1326,6 +1580,7 @@
 
       msg.textContent = "";
       msg.className = "message";
+      CURRENT_USER = user;
 
       document.getElementById("loginSection").classList.add("hidden");
       document.getElementById("mainSection").classList.remove("hidden");
@@ -1363,6 +1618,7 @@
       document.getElementById("accessCode").value = "";
       document.getElementById("loginMessage").textContent = "";
       document.getElementById("loginMessage").className = "message";
+      CURRENT_USER = null;
       clearAdminSearch();
     }
 
@@ -1385,6 +1641,36 @@
       }).join("");
     }
 
+
+    function renderOutstandingHours(user) {
+      const box = document.getElementById("outstandingHoursList");
+      const cutoff = document.getElementById("outstandingCutoffDate");
+      if (!box) return;
+      if (cutoff) cutoff.textContent = OUTSTANDING_CUTOFF_DATE;
+
+      const names = Array.isArray(user.groupShortNames) && user.groupShortNames.length > 0
+        ? user.groupShortNames
+        : [user.shortName];
+
+      const keys = names.map(n => normalizeName(n));
+      const rows = OUTSTANDING_HOURS.filter(item => keys.includes(normalizeName(item.student)));
+
+      if (!rows.length) {
+        box.innerHTML = `<div class="empty-state" style="margin-top:0;">目前没有记录到欠课时数。</div>`;
+        return;
+      }
+
+      box.innerHTML = rows.map(item => `
+        <div class="outstanding-row">
+          <div>
+            ${names.length > 1 ? `<div class="family-student-name">${escapeHtml(item.student)}</div>` : ""}
+            <div class="outstanding-subject">${escapeHtml(item.subject)}</div>
+          </div>
+          <div class="outstanding-hours">${escapeHtml(item.hours)}</div>
+        </div>
+      `).join("");
+    }
+
     function renderStudentView(user) {
       const tbody = document.querySelector("#studentTable tbody");
       const noData = document.getElementById("studentNoData");
@@ -1394,6 +1680,7 @@
       const displayName = isGroup ? user.groupShortNames.join("、") : user.fullName;
       document.getElementById("studentFullName").textContent = displayName;
       renderPaidSubjects(user);
+      renderOutstandingHours(user);
 
       const matchKeys = isGroup
         ? user.groupShortNames.map(n => normalizeName(n))
@@ -1542,6 +1829,7 @@
     });
 
     loadSchedule();
+    loadOutstandingHours();
   </script>
 </body>
 </html>

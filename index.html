@@ -920,10 +920,8 @@
               <a
                 id="meetTopBtn"
                 class="btn btn-secondary hidden"
-                href="https://meet.google.com/wim-dixa-aca?authuser=2&pli=1"
-                target="_blank"
-                rel="noopener noreferrer"
-              >🎥 进入网课</a>
+                href="#onlineClassSection"
+              >🎥 网课入口</a>
 
               <button class="btn-ghost" onclick="handleLogout()">退出 / 切换账号</button>
             </div>
@@ -958,15 +956,38 @@
               </div>
 
               <div>
-                <div class="link-card">
-                  <h3>🌐 网课链接</h3>
-                  <p>如当天为线上课，可直接点击以下按钮进入 Google Meet 课堂。</p>
-                  <a
-                    class="btn btn-primary"
-                    href="https://meet.google.com/wim-dixa-aca?authuser=2&pli=1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >点击进入网课课堂</a>
+                <div class="link-card" id="onlineClassSection">
+                  <h3>🎥 网课课堂</h3>
+                  <p>请根据自己的学校类别进入课堂。</p>
+
+                  <div style="display:grid; gap:12px;">
+                    <div style="padding:14px; border-radius:14px; background:#eff6ff; border:1px solid #bfdbfe;">
+                      <div style="font-weight:900; color:#1d4ed8; margin-bottom:10px;">
+                        🟦 华小 / 国中
+                      </div>
+
+                      <a
+                        class="btn btn-primary"
+                        href="https://meet.google.com/wim-dixa-aca?authuser=2&amp;pli=1"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="width:100%;"
+                      >🚀 进入课堂</a>
+                    </div>
+
+                    <div style="padding:14px; border-radius:14px; background:#fff7ed; border:1px solid #fed7aa;">
+                      <div style="font-weight:900; color:#c2410c; margin-bottom:10px;">
+                        🟧 独中
+                      </div>
+
+                      <a
+                        href="https://meet.google.com/tuz-aufy-uzz?authuser=3"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="width:100%; display:inline-flex; align-items:center; justify-content:center; padding:12px 18px; border-radius:15px; background:linear-gradient(135deg,#ea580c,#f59e0b); color:white; font-size:0.9rem; font-weight:800; text-decoration:none; box-shadow:0 12px 24px rgba(234,88,12,0.22);"
+                      >🚀 进入课堂</a>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="link-card">
@@ -1076,7 +1097,7 @@ ASK 及法语课程将不安排系统性复习，改为老师视时间提供学�
             </div>
 
             <div id="studentNoData" class="empty-state hidden">
-              目前还没有找到属于该学生的补习安排，请稍后再查看或直接联系老师。
+              老师可能还没来得及更新，whatsapp提醒老师一下🙏。
             </div>
 
             <div class="footer-note">
@@ -1264,17 +1285,17 @@ ASK 及法语课程将不安排系统性复习，改为老师视时间提供学�
     const PAID_SUBJECTS = {
       "Joey": "数学",
       "Joell": "数学",
-      "Vanessa": "英文、国语、华语、科学",
+      "Vanessa": "华语",
       "Emily": "华语、科学",
       "Lucas": "历史、华语、科学、地理",
       "Wendy": "历史、地理、科学、华语、国语、英语、数学",
       "Jayden": "历史、地理、科学、华语、国语、英语、数学",
       "Ashley": "数学",
       "Yi Xuan": "无",
-      "Yu Chen": "数学、科学",
+      "Yu Chen": "无",
       "Yan Han": "无",
       "Zhi Thong": "华语",
-      "Yee Zhong": "科学、数学",
+      "Yee Zhong": "无",
       "Sin Jie": "英语、国语、数学、科学、历史",
       "Rou Qian": "英语、国语、数学、科学、历史、地理、华语"
     };
@@ -1758,7 +1779,7 @@ ASK 及法语课程将不安排系统性复习，改为老师视时间提供学�
 
       if (!rows.length) {
         noData.classList.remove("hidden");
-        noData.textContent = "目前还没有找到属于该学生的补习安排，请稍后再查看或直接联系老师。";
+        noData.textContent = "老师可能还没来得及更新，whatsapp提醒老师一下🙏。";
         return;
       }
 

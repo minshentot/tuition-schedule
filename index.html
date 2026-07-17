@@ -899,6 +899,7 @@
 
           <ul class="hint-list">
             <li>每位学生 / 家长都有专属 access code。</li>
+            <li>Access code 不区分英文字母大小写。</li>
             <li>如忘记或遗失，请直接向老师索取新的 access code。</li>
           </ul>
 
@@ -990,14 +991,39 @@
                   </div>
                 </div>
 
+                <div class="link-card" style="background:linear-gradient(135deg,#ecfdf5 0%,#ffffff 100%); border-color:#bbf7d0;">
+                  <h3>🚗 实体课地址</h3>
+                  <p>前往实体课地点时，可点击下方按钮打开 Google Maps 使用导航。</p>
+
+                  <a
+                    href="https://maps.app.goo.gl/qXuLmsy5cNCPYdZm7?g_st=ac"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="width:100%; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 18px; border-radius:15px; background:linear-gradient(135deg,#16a34a,#22c55e); color:white; font-size:0.9rem; font-weight:800; text-decoration:none; box-shadow:0 12px 24px rgba(22,163,74,0.22);"
+                  >🚗 使用导航</a>
+                </div>
+
                 <div class="link-card">
                   <h3>📣 温馨提醒</h3>
                   <p>若老师有临时调整时间、补课、换科目或备注更新，会优先显示在本系统，请记得每日查看。</p>
                 </div>
 
-                <div class="link-card">
-                  <h3>📱 WhatsApp 询问功课</h3>
-                  <p>不会的题目可随时 WhatsApp 老师。老师会在有空时尽量回复；若课堂中有重要信息需要回复，也必须先通知老师。</p>
+                <div class="link-card" style="background:linear-gradient(135deg,#f0fdf4 0%,#ffffff 100%); border-color:#bbf7d0;">
+                  <h3>📱 WhatsApp 联络老师</h3>
+                  <p>有任何课业问题、请假或需要协助，可通过 WhatsApp 联络老师。</p>
+
+                  <a
+                    class="btn btn-primary"
+                    href="https://wa.me/601157824883"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="width:100%; background:linear-gradient(135deg,#16a34a,#22c55e); box-shadow:0 12px 24px rgba(22,163,74,0.22);"
+                  >💬 WhatsApp 老师</a>
+
+                  <p style="margin-top:12px; margin-bottom:0; color:#475569;">
+                    <strong style="color:#b91c1c;">请勿拨打电话。</strong><br>
+                    老师忙碌或正在上课时可能无法立即回复，请耐心等候，不要重复催促；老师看到讯息后会尽快回复。
+                  </p>
                 </div>
               </div>
             </div>
@@ -1644,8 +1670,11 @@ ASK 及法语课程将不安排系统性复习，改为老师视时间提供学�
     function handleLogin() {
       const input = document.getElementById("accessCode");
       const code = (input.value || "").trim();
+      const normalizedCode = code.toLowerCase();
       const msg = document.getElementById("loginMessage");
-      const user = ACCESS_CODES[code];
+      const user = Object.values(ACCESS_CODES).find(account =>
+        String(account.code || "").trim().toLowerCase() === normalizedCode
+      );
 
       if (!code) {
         msg.textContent = "请输入 access code。";

@@ -792,6 +792,160 @@
       white-space: nowrap;
     }
 
+
+    /* =========================
+       学生登录后重要通知视窗
+       ========================= */
+    body.notice-modal-open {
+      overflow: hidden;
+    }
+
+    .student-notice-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      animation: noticeFadeIn 0.2s ease-out;
+    }
+
+    .student-notice-overlay.hidden {
+      display: none !important;
+    }
+
+    .student-notice-modal {
+      width: min(960px, 96vw);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #fffdf8;
+      border: 3px solid #b91c1c;
+      border-radius: 26px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.32);
+      padding: clamp(24px, 4vw, 46px);
+      font-family: "KaiTi", "STKaiti", "BiauKai", "DFKai-SB", "楷体", serif;
+      animation: noticePopIn 0.24s ease-out;
+    }
+
+    .student-notice-kicker {
+      text-align: center;
+      color: #b91c1c;
+      font-family: inherit;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      margin-bottom: 8px;
+    }
+
+    .student-notice-title {
+      text-align: center;
+      color: #111827;
+      font-family: inherit;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      line-height: 1.2;
+      font-weight: 900;
+      margin-bottom: 26px;
+    }
+
+    .student-notice-list {
+      display: grid;
+      gap: 18px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .student-notice-item {
+      display: grid;
+      grid-template-columns: 50px 1fr;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 18px 20px;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.92);
+      font-family: inherit;
+      font-size: clamp(1.25rem, 2.7vw, 1.72rem);
+      line-height: 1.75;
+      color: #1f2937;
+    }
+
+    .student-notice-no {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #b91c1c;
+      color: #fff;
+      font-family: inherit;
+      font-size: 1.42rem;
+      font-weight: 900;
+      line-height: 1;
+      margin-top: 2px;
+      box-shadow: 0 7px 16px rgba(185, 28, 28, 0.2);
+    }
+
+    .student-notice-text,
+    .student-notice-text * {
+      font-family: inherit;
+    }
+
+    .student-notice-red {
+      color: #c1121f;
+      font-weight: 900;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+    }
+
+    .student-notice-footer {
+      margin-top: 26px;
+      text-align: center;
+    }
+
+    .student-notice-confirm {
+      width: min(480px, 100%);
+      min-height: 62px;
+      border: none;
+      border-radius: 16px;
+      padding: 14px 24px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #b91c1c, #dc2626);
+      color: #fff;
+      font-family: "KaiTi", "STKaiti", "BiauKai", "DFKai-SB", "楷体", serif;
+      font-size: clamp(1.3rem, 2.8vw, 1.65rem);
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      box-shadow: 0 12px 28px rgba(185, 28, 28, 0.28);
+      transition: 0.15s ease;
+    }
+
+    .student-notice-confirm:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 15px 32px rgba(185, 28, 28, 0.34);
+    }
+
+    .student-notice-confirm:focus-visible {
+      outline: 4px solid rgba(239, 68, 68, 0.28);
+      outline-offset: 4px;
+    }
+
+    @keyframes noticeFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes noticePopIn {
+      from { opacity: 0; transform: translateY(18px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
     @media (max-width: 980px) {
       .dashboard-grid,
       .admin-layout {
@@ -842,6 +996,42 @@
 
       .toggle-password {
         width: 100%;
+      }
+
+      .student-notice-overlay {
+        padding: 10px;
+        align-items: center;
+      }
+
+      .student-notice-modal {
+        width: 100%;
+        max-height: 94vh;
+        padding: 22px 16px;
+        border-radius: 20px;
+      }
+
+      .student-notice-title {
+        margin-bottom: 18px;
+      }
+
+      .student-notice-list {
+        gap: 12px;
+      }
+
+      .student-notice-item {
+        grid-template-columns: 42px 1fr;
+        gap: 12px;
+        padding: 14px 13px;
+      }
+
+      .student-notice-no {
+        width: 42px;
+        height: 42px;
+        font-size: 1.18rem;
+      }
+
+      .student-notice-footer {
+        margin-top: 18px;
       }
     }
   </style>
@@ -1261,6 +1451,67 @@ ASK 及法语课程将不安排系统性复习，改为老师视时间提供学�
     </main>
   </div>
 
+  <!-- 学生成功登录后显示的重要通知 -->
+  <div
+    id="studentNoticeOverlay"
+    class="student-notice-overlay hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="studentNoticeTitle"
+    aria-describedby="studentNoticeDescription"
+  >
+    <div class="student-notice-modal">
+      <div class="student-notice-kicker">IMPORTANT NOTICE · 重要通知</div>
+      <h2 id="studentNoticeTitle" class="student-notice-title">考试前夕补习安排</h2>
+
+      <ol id="studentNoticeDescription" class="student-notice-list">
+        <li class="student-notice-item">
+          <span class="student-notice-no">1</span>
+          <div class="student-notice-text">
+            为确保学生能够完成学习进度，考试前夕老师可能会视情况
+            <span class="student-notice-red">临时安排补习、增加补习课或延长原定补习时间</span>，
+            请学生<span class="student-notice-red">尽量配合相关安排</span>。
+          </div>
+        </li>
+
+        <li class="student-notice-item">
+          <span class="student-notice-no">2</span>
+          <div class="student-notice-text">
+            老师需提前安排课程及准备教材，因此若学生因个人原因缺席课程，
+            <span class="student-notice-red">恕不另行补课</span>。
+          </div>
+        </li>
+
+        <li class="student-notice-item">
+          <span class="student-notice-no">3</span>
+          <div class="student-notice-text">
+            若老师身体不适，但仍适合授课，课程可能会临时调整为
+            <span class="student-notice-red">线上课</span>，具体安排将另行通知。
+          </div>
+        </li>
+
+        <li class="student-notice-item">
+          <span class="student-notice-no">4</span>
+          <div class="student-notice-text">
+            考试前夕课程安排可能较为紧凑，请学生与家长
+            <span class="student-notice-red">留意最新通知</span>，并尽量配合时间调整。
+          </div>
+        </li>
+      </ol>
+
+      <div class="student-notice-footer">
+        <button
+          id="studentNoticeConfirmBtn"
+          type="button"
+          class="student-notice-confirm"
+          onclick="closeStudentNotice()"
+        >
+          我已阅读并了解
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const CSV_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vQY9srKI-EAsARYyhifRknDi3qcDdV-wY7AfQdG6Clx12Dtmp2A0ffCpAizDEZU_Kz6_A7ugfLIRuoY/pub?output=csv";
@@ -1667,6 +1918,31 @@ ASK 及法语课程将不安排系统性复习，改为老师视时间提供学�
       input.focus();
     }
 
+    function showStudentNotice() {
+      const overlay = document.getElementById("studentNoticeOverlay");
+      const confirmBtn = document.getElementById("studentNoticeConfirmBtn");
+      if (!overlay) return;
+
+      overlay.classList.remove("hidden");
+      document.body.classList.add("notice-modal-open");
+
+      // 将键盘焦点放到确认按钮，方便电脑与无障碍操作。
+      requestAnimationFrame(() => {
+        if (confirmBtn) confirmBtn.focus();
+      });
+    }
+
+    function closeStudentNotice() {
+      const overlay = document.getElementById("studentNoticeOverlay");
+      if (!overlay) return;
+
+      overlay.classList.add("hidden");
+      document.body.classList.remove("notice-modal-open");
+
+      // 关闭后回到学生页面顶部，避免手机停留在奇怪的位置。
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     function handleLogin() {
       const input = document.getElementById("accessCode");
       const code = (input.value || "").trim();
@@ -1727,10 +2003,12 @@ ASK 及法语课程将不安排系统性复习，改为老师视时间提供学�
         document.getElementById("adminView").classList.add("hidden");
         meetTopBtn.classList.remove("hidden");
         renderStudentView(user);
+        showStudentNotice();
       }
     }
 
     function handleLogout() {
+      closeStudentNotice();
       document.getElementById("mainSection").classList.add("hidden");
       document.getElementById("loginSection").classList.remove("hidden");
       document.getElementById("heroSubtitle").classList.remove("hidden");
